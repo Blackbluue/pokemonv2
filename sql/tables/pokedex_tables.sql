@@ -1,42 +1,3 @@
--- DROP TABLE IF EXISTS Pokemon;
-DROP TABLE IF EXISTS EntryStatus;
-DROP TABLE IF EXISTS RegionalPokedex;
-DROP TABLE IF EXISTS AlternateForm;
-DROP TABLE IF EXISTS RegionalForm;
-DROP TABLE IF EXISTS NationalPokeDex;
-DROP TABLE IF EXISTS PokeBreeding;
-DROP TABLE IF EXISTS PokeStats;
-DROP TABLE IF EXISTS Ability;
-DROP TABLE IF EXISTS TypeMatchup;
-
-CREATE TABLE TypeMatchup(
-    name         VARCHAR(16)   NOT NULL,
-    vs_normal    DECIMAL(2, 1) NOT NULL DEFAULT 1,
-    vs_fire      DECIMAL(2, 1) NOT NULL DEFAULT 1,
-    vs_fighting  DECIMAL(2, 1) NOT NULL DEFAULT 1,
-    vs_water     DECIMAL(2, 1) NOT NULL DEFAULT 1,
-    vs_flying    DECIMAL(2, 1) NOT NULL DEFAULT 1,
-    vs_grass     DECIMAL(2, 1) NOT NULL DEFAULT 1,
-    vs_poison    DECIMAL(2, 1) NOT NULL DEFAULT 1,
-    vs_electric  DECIMAL(2, 1) NOT NULL DEFAULT 1,
-    vs_ground    DECIMAL(2, 1) NOT NULL DEFAULT 1,
-    vs_psychic   DECIMAL(2, 1) NOT NULL DEFAULT 1,
-    vs_rock      DECIMAL(2, 1) NOT NULL DEFAULT 1,
-    vs_ice       DECIMAL(2, 1) NOT NULL DEFAULT 1,
-    vs_bug       DECIMAL(2, 1) NOT NULL DEFAULT 1,
-    vs_dragon    DECIMAL(2, 1) NOT NULL DEFAULT 1,
-    vs_ghost     DECIMAL(2, 1) NOT NULL DEFAULT 1,
-    vs_dark      DECIMAL(2, 1) NOT NULL DEFAULT 1,
-    vs_steel     DECIMAL(2, 1) NOT NULL DEFAULT 1,
-    vs_fairy     DECIMAL(2, 1) NOT NULL DEFAULT 1,
-    PRIMARY KEY(name)
-);
-
-CREATE TABLE Ability(
-    name        VARCHAR(16) NOT NULL,
-    flavor_text TINYTEXT    NOT NULL,
-    PRIMARY KEY(name)
-);
 
 -- TODO: add a moves tables
 CREATE TABLE PokeStats(
@@ -72,7 +33,6 @@ CREATE TABLE PokeBreeding(
     PRIMARY KEY(id)
 );
 
--- TODO: add tables for each regional pokedex
 CREATE TABLE NationalPokeDex(
     id                      SMALLINT UNSIGNED       NOT NULL COMMENT 'national pokédex number',
     name                    VARCHAR(16)             NOT NULL UNIQUE,
@@ -153,7 +113,7 @@ CREATE TABLE EntryStatus(
 );
 
 -- TODO: add extra info for an instance of a pokemon
--- CREATE TABLE Pokemon(
---     id SMALLINT UNSIGNED NOT NULL COMMENT 'national pokédex number',
---     FOREIGN KEY(base_id) REFERENCES PokeStats(id),
--- );
+CREATE TABLE Pokemon(
+    id SMALLINT UNSIGNED NOT NULL COMMENT 'national pokédex number',
+    FOREIGN KEY(id) REFERENCES PokeStats(id)
+);
