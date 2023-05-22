@@ -1,6 +1,8 @@
 -- DROP TABLE IF EXISTS Pokemon;
 DROP TABLE IF EXISTS EntryStatus;
+DROP TABLE IF EXISTS RegionalPokedex;
 DROP TABLE IF EXISTS AlternateForm;
+DROP TABLE IF EXISTS RegionalForm;
 DROP TABLE IF EXISTS NationalPokeDex;
 DROP TABLE IF EXISTS PokeBreeding;
 DROP TABLE IF EXISTS PokeStats;
@@ -91,6 +93,26 @@ CREATE TABLE NationalPokeDex(
     FOREIGN KEY(evolution)  REFERENCES NationalPokeDex(id)
 );
 
+CREATE TABLE RegionalForm(
+    id                      TINYINT UNSIGNED        NOT NULL,
+    base_id                 SMALLINT UNSIGNED       NOT NULL COMMENT 'national pokédex number',
+    region                  VARCHAR(16)             NOT NULL,
+    type_1                  VARCHAR(16)             NOT NULL,
+    type_2                  VARCHAR(16)             DEFAULT NULL,
+    stat_id                 SMALLINT UNSIGNED       NOT NULL,
+    classification          VARCHAR(16)             NOT NULL,
+    height                  DECIMAL(6,2) UNSIGNED   NOT NULL COMMENT 'measured in meters',
+    weight                  DECIMAL(6,2) UNSIGNED   NOT NULL COMMENT 'measured in kilograms',
+    capture_rate            TINYINT UNSIGNED        NOT NULL,
+    evolution               SMALLINT UNSIGNED       DEFAULT NULL COMMENT 'national pokédex number',
+    description             TINYTEXT                NOT NULL,
+    PRIMARY KEY(id),
+    FOREIGN KEY(base_id)    REFERENCES NationalPokeDex(id),
+    FOREIGN KEY(type_1)     REFERENCES TypeMatchup(name),
+    FOREIGN KEY(type_2)     REFERENCES TypeMatchup(name),
+    FOREIGN KEY(stat_id)    REFERENCES PokeStats(id)
+);
+
 -- TODO: create item table
 CREATE TABLE AlternateForm(
     id                      TINYINT UNSIGNED        NOT NULL,
@@ -108,6 +130,16 @@ CREATE TABLE AlternateForm(
     FOREIGN KEY(type_1)     REFERENCES TypeMatchup(name),
     FOREIGN KEY(type_2)     REFERENCES TypeMatchup(name),
     FOREIGN KEY(stat_id)    REFERENCES PokeStats(id)
+);
+
+-- TODO: add region table
+CREATE TABLE RegionalPokedex(
+    id          SMALLINT UNSIGNED   NOT NULL COMMENT 'regional pokédex number',
+    national_id SMALLINT UNSIGNED   NOT NULL COMMENT 'national pokédex number',
+    description TINYTEXT            NOT NULL,
+    region_id   TINYINT UNSIGNED    NOT NULL,
+    PRIMARY KEY(id),
+    FOREIGN KEY(national_id)    REFERENCES NationalPokeDex(id)
 );
 
 -- TODO: possibly incorporate this table into regional pokedexes
