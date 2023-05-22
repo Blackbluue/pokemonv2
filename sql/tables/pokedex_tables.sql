@@ -53,6 +53,16 @@ CREATE TABLE NationalPokeDex(
     FOREIGN KEY(evolution)  REFERENCES NationalPokeDex(id)
 );
 
+CREATE TABLE MoveLearnOrder(
+    pokemon_id  SMALLINT UNSIGNED   NOT NULL COMMENT 'national pokédex number',
+    move_id     SMALLINT UNSIGNED   NOT NULL,
+    level       TINYINT UNSIGNED    NOT NULL COMMENT '0 means learn on evolution',
+    PRIMARY KEY(pokemon_id, move_id, level),
+    CONSTRAINT CHK_level CHECK(level <= 100),
+    FOREIGN KEY(pokemon_id) REFERENCES NationalPokeDex(id),
+    FOREIGN KEY(move_id)    REFERENCES Move(id)
+);
+
 CREATE TABLE RegionalForm(
     id                      TINYINT UNSIGNED        NOT NULL,
     base_id                 SMALLINT UNSIGNED       NOT NULL COMMENT 'national pokédex number',
@@ -110,10 +120,4 @@ CREATE TABLE EntryStatus(
     PRIMARY KEY(base_id, form_id),
     FOREIGN KEY(base_id)    REFERENCES NationalPokeDex(id),
     FOREIGN KEY(form_id)    REFERENCES AlternateForm(id)
-);
-
--- TODO: add extra info for an instance of a pokemon
-CREATE TABLE Pokemon(
-    id SMALLINT UNSIGNED NOT NULL COMMENT 'national pokédex number',
-    FOREIGN KEY(id) REFERENCES PokeStats(id)
 );
