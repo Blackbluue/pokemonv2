@@ -1,9 +1,10 @@
 -- DROP TABLE IF EXISTS Pokemon;
 DROP TABLE IF EXISTS EntryStatus;
-DROP TABLE IF EXISTS AlternateForms;
+DROP TABLE IF EXISTS AlternateForm;
 DROP TABLE IF EXISTS NationalPokeDex;
 DROP TABLE IF EXISTS PokeBreeding;
 DROP TABLE IF EXISTS PokeStats;
+DROP TABLE IF EXISTS Ability;
 DROP TABLE IF EXISTS TypeMatchup;
 
 CREATE TABLE TypeMatchup(
@@ -29,7 +30,13 @@ CREATE TABLE TypeMatchup(
     PRIMARY KEY(name)
 );
 
--- TODO: add Ability table
+CREATE TABLE Ability(
+    name        VARCHAR(16) NOT NULL,
+    flavor_text TINYTEXT    NOT NULL,
+    PRIMARY KEY(name)
+);
+
+-- TODO: add a moves tables
 CREATE TABLE PokeStats(
     id              SMALLINT UNSIGNED                                   NOT NULL,
     ability_1       VARCHAR(16)                                         NOT NULL,
@@ -49,7 +56,9 @@ CREATE TABLE PokeStats(
     ev_spd          BIT(2)                                              NOT NULL,
     exp_yield       SMALLINT UNSIGNED                                   NOT NULL,
     exp_growth_rate ENUM('err', 'fst', 'm_fst', 'm_slw', 'slw', 'flc')  NOT NULL,
-    PRIMARY KEY(id)
+    PRIMARY KEY(id),
+    FOREIGN KEY(ability_1)     REFERENCES Ability(name),
+    FOREIGN KEY(ability_2)     REFERENCES Ability(name)
 );
 
 CREATE TABLE PokeBreeding(
@@ -83,7 +92,7 @@ CREATE TABLE NationalPokeDex(
 );
 
 -- TODO: create item table
-CREATE TABLE AlternateForms(
+CREATE TABLE AlternateForm(
     id                      TINYINT UNSIGNED        NOT NULL,
     base_id                 SMALLINT UNSIGNED       NOT NULL COMMENT 'national pokédex number',
     moniker                 VARCHAR(16)             NOT NULL,
@@ -92,7 +101,6 @@ CREATE TABLE AlternateForms(
     stat_id                 SMALLINT UNSIGNED       NOT NULL,
     height                  DECIMAL(6,2) UNSIGNED   NOT NULL COMMENT 'measured in meters',
     weight                  DECIMAL(6,2) UNSIGNED   NOT NULL COMMENT 'measured in kilograms',
-    ability                 VARCHAR(16)             NOT NULL,
     description             TINYTEXT                NOT NULL,
     item_id                 SMALLINT,
     PRIMARY KEY(id),
@@ -109,7 +117,7 @@ CREATE TABLE EntryStatus(
     owned       ENUM("unknown", "seen", "owned")    NOT NULL,
     PRIMARY KEY(base_id, form_id),
     FOREIGN KEY(base_id)    REFERENCES NationalPokeDex(id),
-    FOREIGN KEY(form_id)    REFERENCES AlternateForms(id)
+    FOREIGN KEY(form_id)    REFERENCES AlternateForm(id)
 );
 
 -- TODO: add extra info for an instance of a pokemon
