@@ -17,6 +17,7 @@ CREATE TABLE PokeStats(
     ev_sp_def       BIT(2)                                              NOT NULL,
     ev_spd          BIT(2)                                              NOT NULL,
     exp_yield       SMALLINT UNSIGNED                                   NOT NULL,
+    -- TODO: make this a lookup table instead of an enum
     exp_growth_rate ENUM('err', 'fst', 'm_fst', 'm_slw', 'slw', 'flc')  NOT NULL,
     PRIMARY KEY(id),
     FOREIGN KEY(universal_id)   REFERENCES UniversalPokeID(id),
@@ -65,6 +66,7 @@ ALTER TABLE UniversalPokeID
 CREATE TABLE RegionalForm(
     id              SMALLINT UNSIGNED       NOT NULL,
     universal_id    SMALLINT UNSIGNED       NOT NULL,
+    -- TODO: make this a lookup of a specific region
     region          VARCHAR(16)             NOT NULL,
     type_1          VARCHAR(16)             NOT NULL,
     type_2          VARCHAR(16)             DEFAULT NULL,
@@ -85,13 +87,12 @@ ALTER TABLE UniversalPokeID
     ADD region_form_id SMALLINT UNSIGNED DEFAULT NULL;
 
 -- CREATE TABLE MoveLearnOrder(
---     pokemon_id  SMALLINT UNSIGNED   NOT NULL        COMMENT 'national pokédex number',
---     region_form_id     TINYINT UNSIGNED    DEFAULT NULL,
+--     universal_id    SMALLINT UNSIGNED       NOT NULL,
 --     move_id     SMALLINT UNSIGNED   NOT NULL,
 --     level       TINYINT UNSIGNED    NOT NULL        COMMENT '0 means learn on evolution',
 --     PRIMARY KEY(pokemon_id, move_id, level),
 --     CONSTRAINT CHK_level CHECK(level <= 100),
---     FOREIGN KEY(pokemon_id) REFERENCES NationalPokeDex(id),
+--     FOREIGN KEY(universal_id)   REFERENCES UniversalPokeID(id),
 --     FOREIGN KEY(move_id)    REFERENCES Move(id)
 -- );
 
@@ -118,26 +119,15 @@ ALTER TABLE UniversalPokeID
 
 -- TODO: add region table
 CREATE TABLE RegionalPokedex(
-    id          SMALLINT UNSIGNED   NOT NULL COMMENT 'regional pokédex number',
-    universal_id    SMALLINT UNSIGNED       NOT NULL,
-    region_id   TINYINT UNSIGNED    NOT NULL,
-    owned       ENUM("unknown", "seen", "owned")    NOT NULL,
-    description TINYTEXT            NOT NULL,
-    PRIMARY KEY(id, region_id),
+    universal_id    SMALLINT UNSIGNED                   NOT NULL,
+    region_id       TINYINT  UNSIGNED                   NOT NULL,
+    id              SMALLINT UNSIGNED                   NOT NULL COMMENT 'regional pokédex number',
+    owned           ENUM("unknown", "seen", "owned")    NOT NULL,
+    description     TINYTEXT                            NOT NULL,
+    PRIMARY KEY(universal_id, region_id),
     FOREIGN KEY(universal_id)   REFERENCES UniversalPokeID(id)
     -- FOREIGN KEY(region_id)    REFERENCES Region(id),
 );
-
--- CREATE TABLE CatchLocation(
-
--- );
-
--- TODO: possibly incorporate this table into regional pokedexes
--- CREATE TABLE EntryStatus(
---     universal_id    SMALLINT UNSIGNED       NOT NULL,
---     PRIMARY KEY(universal_id),
---     FOREIGN KEY(universal_id)   REFERENCES UniversalPokeID(id)
--- );
 
 -- AlternateForm.moniker
     -- Mega, Primal, Gigantamax
