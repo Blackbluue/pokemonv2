@@ -26,3 +26,9 @@ CREATE TABLE Ability(
     flavor_text TINYTEXT    NOT NULL,
     PRIMARY KEY(name)
 );
+
+-- Must insert records into this table before any table that adds a reference column to it
+CREATE TABLE UniversalPokeID(
+    id SMALLINT UNSIGNED   NOT NULL,
+    PRIMARY KEY(id)
+);
