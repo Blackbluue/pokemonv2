@@ -25,7 +25,7 @@ CREATE TABLE PokeStats(
 );
 
 CREATE TABLE PokeBreeding(
-    id          SMALLINT UNSIGNED   NOT NULL COMMENT 'national pokédex number',
+    id          SMALLINT UNSIGNED   NOT NULL,
     egg_cycles  TINYINT UNSIGNED    NOT NULL,
     egg_group_1 VARCHAR(16)         NOT NULL,
     egg_group_2 VARCHAR(16)         DEFAULT NULL,
@@ -53,16 +53,6 @@ CREATE TABLE NationalPokeDex(
     FOREIGN KEY(evolution)  REFERENCES NationalPokeDex(id)
 );
 
-CREATE TABLE MoveLearnOrder(
-    pokemon_id  SMALLINT UNSIGNED   NOT NULL COMMENT 'national pokédex number',
-    move_id     SMALLINT UNSIGNED   NOT NULL,
-    level       TINYINT UNSIGNED    NOT NULL COMMENT '0 means learn on evolution',
-    PRIMARY KEY(pokemon_id, move_id, level),
-    CONSTRAINT CHK_level CHECK(level <= 100),
-    FOREIGN KEY(pokemon_id) REFERENCES NationalPokeDex(id),
-    FOREIGN KEY(move_id)    REFERENCES Move(id)
-);
-
 CREATE TABLE RegionalForm(
     id                      TINYINT UNSIGNED        NOT NULL,
     base_id                 SMALLINT UNSIGNED       NOT NULL COMMENT 'national pokédex number',
@@ -82,6 +72,28 @@ CREATE TABLE RegionalForm(
     FOREIGN KEY(type_2)     REFERENCES TypeMatchup(name),
     FOREIGN KEY(stat_id)    REFERENCES PokeStats(id)
 );
+
+CREATE TABLE UniversalPokeID(
+    id          SMALLINT UNSIGNED   NOT NULL,
+    national_id SMALLINT UNSIGNED   NOT NULL,
+    form_id     TINYINT UNSIGNED    DEFAULT NULL,
+    breeding_id SMALLINT UNSIGNED   NOT NULL,
+    PRIMARY KEY(id),
+    FOREIGN KEY(national_id)    REFERENCES NationalPokeDex(id),
+    FOREIGN KEY(form_id)    REFERENCES RegionalForm(id)
+    FOREIGN KEY(breeding_id)    REFERENCES PokeBreeding(id)
+);
+
+-- CREATE TABLE MoveLearnOrder(
+--     pokemon_id  SMALLINT UNSIGNED   NOT NULL        COMMENT 'national pokédex number',
+--     form_id     TINYINT UNSIGNED    DEFAULT NULL,
+--     move_id     SMALLINT UNSIGNED   NOT NULL,
+--     level       TINYINT UNSIGNED    NOT NULL        COMMENT '0 means learn on evolution',
+--     PRIMARY KEY(pokemon_id, move_id, level),
+--     CONSTRAINT CHK_level CHECK(level <= 100),
+--     FOREIGN KEY(pokemon_id) REFERENCES NationalPokeDex(id),
+--     FOREIGN KEY(move_id)    REFERENCES Move(id)
+-- );
 
 -- TODO: create item table
 CREATE TABLE AlternateForm(
@@ -108,9 +120,13 @@ CREATE TABLE RegionalPokedex(
     national_id SMALLINT UNSIGNED   NOT NULL COMMENT 'national pokédex number',
     description TINYTEXT            NOT NULL,
     region_id   TINYINT UNSIGNED    NOT NULL,
-    PRIMARY KEY(id),
+    PRIMARY KEY(id, national_id),
     FOREIGN KEY(national_id)    REFERENCES NationalPokeDex(id)
 );
+
+-- CREATE TABLE CatchLocation(
+
+-- );
 
 -- TODO: possibly incorporate this table into regional pokedexes
 CREATE TABLE EntryStatus(
@@ -121,3 +137,6 @@ CREATE TABLE EntryStatus(
     FOREIGN KEY(base_id)    REFERENCES NationalPokeDex(id),
     FOREIGN KEY(form_id)    REFERENCES AlternateForm(id)
 );
+
+-- AlternateForm.moniker
+    -- Mega, Primal, Gigantamax
