@@ -1,26 +1,15 @@
--- TODO: manually add in values to this table
--- TODO: make additions to this table be more dynamic for future proofing
-CREATE TABLE TypeMatchup(
-    name         VARCHAR(16)   NOT NULL,
-    vs_normal    DECIMAL(2, 1) NOT NULL DEFAULT 1,
-    vs_fire      DECIMAL(2, 1) NOT NULL DEFAULT 1,
-    vs_fighting  DECIMAL(2, 1) NOT NULL DEFAULT 1,
-    vs_water     DECIMAL(2, 1) NOT NULL DEFAULT 1,
-    vs_flying    DECIMAL(2, 1) NOT NULL DEFAULT 1,
-    vs_grass     DECIMAL(2, 1) NOT NULL DEFAULT 1,
-    vs_poison    DECIMAL(2, 1) NOT NULL DEFAULT 1,
-    vs_electric  DECIMAL(2, 1) NOT NULL DEFAULT 1,
-    vs_ground    DECIMAL(2, 1) NOT NULL DEFAULT 1,
-    vs_psychic   DECIMAL(2, 1) NOT NULL DEFAULT 1,
-    vs_rock      DECIMAL(2, 1) NOT NULL DEFAULT 1,
-    vs_ice       DECIMAL(2, 1) NOT NULL DEFAULT 1,
-    vs_bug       DECIMAL(2, 1) NOT NULL DEFAULT 1,
-    vs_dragon    DECIMAL(2, 1) NOT NULL DEFAULT 1,
-    vs_ghost     DECIMAL(2, 1) NOT NULL DEFAULT 1,
-    vs_dark      DECIMAL(2, 1) NOT NULL DEFAULT 1,
-    vs_steel     DECIMAL(2, 1) NOT NULL DEFAULT 1,
-    vs_fairy     DECIMAL(2, 1) NOT NULL DEFAULT 1,
+CREATE TABLE Type(
+    name    VARCHAR(16)   NOT NULL,
     PRIMARY KEY(name)
+);
+
+CREATE TABLE TypeMatchup(
+    attacker VARCHAR(16) NOT NULL,
+    defender VARCHAR(16) NOT NULL,
+    multiplier DECIMAL(2, 1) NOT NULL DEFAULT 1,
+    PRIMARY KEY(attacker, defender),
+    FOREIGN KEY(attacker) REFERENCES Type(name),
+    FOREIGN KEY(defender) REFERENCES Type(names)
 );
 
 CREATE TABLE Game(

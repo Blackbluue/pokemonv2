@@ -48,7 +48,7 @@ CREATE TABLE Move(
     CONSTRAINT CHK_accuracy CHECK(accuracy <= 100),
     CONSTRAINT CHK_pp CHECK(pp <= 64),
     FOREIGN KEY(id)         REFERENCES MoveExtraData(id),
-    FOREIGN KEY(type)       REFERENCES TypeMatchup(name)
+    FOREIGN KEY(type)       REFERENCES Type(name)
 );
 
 -- category:

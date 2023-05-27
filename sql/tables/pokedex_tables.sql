@@ -56,8 +56,8 @@ CREATE TABLE NationalPokeDex(
     description     TINYTEXT                NOT NULL,
     PRIMARY KEY(id),
     FOREIGN KEY(universal_id)   REFERENCES UniversalPokeID(id),
-    FOREIGN KEY(type_1)         REFERENCES TypeMatchup(name),
-    FOREIGN KEY(type_2)         REFERENCES TypeMatchup(name),
+    FOREIGN KEY(type_1)         REFERENCES Type(name),
+    FOREIGN KEY(type_2)         REFERENCES Type(name),
     FOREIGN KEY(stat_id)        REFERENCES PokeStats(id),
     FOREIGN KEY(evolution)      REFERENCES NationalPokeDex(id)
 );
@@ -80,8 +80,8 @@ CREATE TABLE RegionalForm(
     PRIMARY KEY(id),
     FOREIGN KEY(universal_id)   REFERENCES UniversalPokeID(id),
     FOREIGN KEY(region)         REFERENCES Region(id),
-    FOREIGN KEY(type_1)         REFERENCES TypeMatchup(name),
-    FOREIGN KEY(type_2)         REFERENCES TypeMatchup(name),
+    FOREIGN KEY(type_1)         REFERENCES Type(name),
+    FOREIGN KEY(type_2)         REFERENCES Type(name),
     FOREIGN KEY(stat_id)        REFERENCES PokeStats(id)
 );
 ALTER TABLE UniversalPokeID
@@ -111,8 +111,8 @@ CREATE TABLE AlternateForm(
     item_id         SMALLINT UNSIGNED,
     PRIMARY KEY(id),
     FOREIGN KEY(universal_id)   REFERENCES UniversalPokeID(id),
-    FOREIGN KEY(type_1)         REFERENCES TypeMatchup(name),
-    FOREIGN KEY(type_2)         REFERENCES TypeMatchup(name),
+    FOREIGN KEY(type_1)         REFERENCES Type(name),
+    FOREIGN KEY(type_2)         REFERENCES Type(name),
     FOREIGN KEY(stat_id)        REFERENCES PokeStats(id),
     FOREIGN KEY(item_id)        REFERENCES ItemDetails(id)
 );
