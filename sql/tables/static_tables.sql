@@ -23,9 +23,18 @@ CREATE TABLE TypeMatchup(
     PRIMARY KEY(name)
 );
 
+CREATE TABLE Game(
+    id              TINYINT UNSIGNED   NOT NULL,
+    display_name    VARCHAR(16)        NOT NULL,
+    abbreviation    VARCHAR(5)         NOT NULL,
+    generation      TINYINT UNSIGNED   NOT NULL,
+    PRIMARY KEY(id)
+);
+
+-- TODO: move this table into pokedex_tables.sql
 CREATE TABLE Ability(
-    name        VARCHAR(16) NOT NULL,
-    flavor_text TINYTEXT    NOT NULL,
+    name            VARCHAR(16)     NOT NULL,
+    flavor_text     TINYTEXT        NOT NULL,
     PRIMARY KEY(name)
 );
 

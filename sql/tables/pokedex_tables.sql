@@ -40,6 +40,7 @@ CREATE TABLE PokeBreeding(
 ALTER TABLE UniversalPokeID
     ADD breeding_id SMALLINT UNSIGNED DEFAULT NULL;
 
+-- TODO: restructure Pokedex tables to be more logical and less redundant
 CREATE TABLE NationalPokeDex(
     id              SMALLINT UNSIGNED       NOT NULL COMMENT 'national pokédex number',
     universal_id    SMALLINT UNSIGNED       NOT NULL,
@@ -66,8 +67,7 @@ ALTER TABLE UniversalPokeID
 CREATE TABLE RegionalForm(
     id              SMALLINT UNSIGNED       NOT NULL,
     universal_id    SMALLINT UNSIGNED       NOT NULL,
-    -- TODO: make this a lookup of a specific region
-    region          VARCHAR(16)             NOT NULL,
+    region          TINYINT  UNSIGNED       NOT NULL,
     type_1          VARCHAR(16)             NOT NULL,
     type_2          VARCHAR(16)             DEFAULT NULL,
     stat_id         SMALLINT UNSIGNED       NOT NULL,
@@ -79,6 +79,7 @@ CREATE TABLE RegionalForm(
     description     TINYTEXT                NOT NULL,
     PRIMARY KEY(id),
     FOREIGN KEY(universal_id)   REFERENCES UniversalPokeID(id),
+    FOREIGN KEY(region)         REFERENCES Region(id),
     FOREIGN KEY(type_1)         REFERENCES TypeMatchup(name),
     FOREIGN KEY(type_2)         REFERENCES TypeMatchup(name),
     FOREIGN KEY(stat_id)        REFERENCES PokeStats(id)
@@ -96,6 +97,7 @@ ALTER TABLE UniversalPokeID
 --     FOREIGN KEY(move_id)    REFERENCES Move(id)
 -- );
 
+-- TODO: make lookup table for alt form moniker names
 CREATE TABLE AlternateForm(
     id              SMALLINT UNSIGNED       NOT NULL,
     universal_id    SMALLINT UNSIGNED       NOT NULL,
@@ -117,7 +119,6 @@ CREATE TABLE AlternateForm(
 ALTER TABLE UniversalPokeID
     ADD alt_form_id SMALLINT UNSIGNED DEFAULT NULL;
 
--- TODO: add region table
 CREATE TABLE RegionalPokedex(
     universal_id    SMALLINT UNSIGNED                   NOT NULL,
     region_id       TINYINT  UNSIGNED                   NOT NULL,
@@ -125,8 +126,8 @@ CREATE TABLE RegionalPokedex(
     owned           ENUM("unknown", "seen", "owned")    NOT NULL,
     description     TINYTEXT                            NOT NULL,
     PRIMARY KEY(universal_id, region_id),
-    FOREIGN KEY(universal_id)   REFERENCES UniversalPokeID(id)
-    -- FOREIGN KEY(region_id)    REFERENCES Region(id),
+    FOREIGN KEY(universal_id) REFERENCES UniversalPokeID(id),
+    FOREIGN KEY(region_id)    REFERENCES Region(id)
 );
 
 -- AlternateForm.moniker
