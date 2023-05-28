@@ -2,6 +2,7 @@ SOURCE drop_tables.sql;
 -- TODO: rename static_tables.sql to be more specific for its purpose
 SOURCE static_tables.sql;
 SOURCE battle_tables.sql;
+SOURCE trainer_tables.sql;
 SOURCE regional_tables.sql;
 SOURCE item_base_tables.sql;
 SOURCE item_types_tables.sql;

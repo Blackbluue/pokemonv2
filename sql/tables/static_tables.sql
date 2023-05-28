@@ -29,6 +29,7 @@ CREATE TABLE Ability(
 -- Must insert records into this table before any table that adds a reference column to it
 CREATE TABLE UniversalPokeID(
     id SMALLINT UNSIGNED   NOT NULL,
+    ot_id   SMALLINT UNSIGNED,
     PRIMARY KEY(id)
 );
 

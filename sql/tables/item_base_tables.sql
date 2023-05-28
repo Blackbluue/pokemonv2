@@ -18,12 +18,12 @@ CREATE TABLE ItemDetails(
     FOREIGN KEY(game) REFERENCES Game(display_name)
 );
 
--- TODO: add foreign key to Trainer table once built
 CREATE TABLE Bag(
     trainer_id  SMALLINT UNSIGNED NOT NULL,
     item_id     SMALLINT UNSIGNED NOT NULL,
     count       TINYINT  UNSIGNED NOT NULL DEFAULT 1,
     PRIMARY KEY(trainer_id, item_id),
     CONSTRAINT CHK_count CHECK(count <= 99),
-    FOREIGN KEY(item_id) REFERENCES ItemDetails(id)
+    FOREIGN KEY(item_id) REFERENCES ItemDetails(id),
+    FOREIGN KEY(trainer_id) REFERENCES Trainer(id)
 );
