@@ -1,5 +1,17 @@
+-- TODO: add lookup table for flavors
+CREATE TABLE Nature(
+    name            VARCHAR(16) NOT NULL,
+    stat_up         BIT(3) COMMENT '0-4 = atk, def, sp_atk, sp_def, spd in order',
+    stat_down       BIT(3),
+    fav_flavor      VARCHAR(16) NOT NULL,
+    hate_flavor     VARCHAR(16) NOT NULL,
+    PRIMARY KEY(name)
+);
+
+-- TODO: decide if these stats should also include ev/IV/nature changes
 CREATE TABLE PokeStats(
     id              SMALLINT UNSIGNED   NOT NULL,
+    nature          VARCHAR(16)         NOT NULL,
     ability         VARCHAR(16)         NOT NULL,
     stats_hp        SMALLINT UNSIGNED   NOT NULL,
     stats_atk       SMALLINT UNSIGNED   NOT NULL,
@@ -8,6 +20,7 @@ CREATE TABLE PokeStats(
     stats_sp_def    SMALLINT UNSIGNED   NOT NULL,
     stats_spd       SMALLINT UNSIGNED   NOT NULL,
     PRIMARY KEY(id),
+    FOREIGN KEY(nature)           REFERENCES Nature(name),
     FOREIGN KEY(ability)          REFERENCES Ability(name)
 );
 
@@ -46,12 +59,15 @@ CREATE TABLE MoveList(
     FOREIGN KEY(move_4) REFERENCES Move(name)
 );
 
+-- TODO: add ribbon information
 CREATE TABLE Pokemon(
     id              SMALLINT UNSIGNED   NOT NULL,
     universal_id    SMALLINT UNSIGNED   NOT NULL,
     ot_id           SMALLINT UNSIGNED,
     ot_name         VARCHAR(16),
     nickname        VARCHAR(16),
+    gender          BIT                 NOT NULL COMMENT '0 for male, 1 for female',
+    held_item       SMALLINT UNSIGNED,
     date_met        DATE,
     level           TINYINT UNSIGNED NOT NULL,
     PRIMARY KEY(id),
@@ -59,5 +75,6 @@ CREATE TABLE Pokemon(
     FOREIGN KEY(id)             REFERENCES PokeStats(id),
     FOREIGN KEY(id)             REFERENCES HiddenStats(id),
     FOREIGN KEY(id)             REFERENCES MoveList(id),
-    FOREIGN KEY(universal_id)   REFERENCES UniversalPokeID(id)
+    FOREIGN KEY(universal_id)   REFERENCES UniversalPokeID(id),
+    FOREIGN KEY(held_item)      REFERENCES ItemDetails(id)
 );
