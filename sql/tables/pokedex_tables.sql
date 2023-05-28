@@ -1,4 +1,4 @@
-CREATE TABLE PokeStats(
+CREATE TABLE BasePokeStats(
     id              SMALLINT UNSIGNED   NOT NULL,
     universal_id    SMALLINT UNSIGNED   NOT NULL,
     ability_1       VARCHAR(16)         NOT NULL,
@@ -25,7 +25,7 @@ CREATE TABLE PokeStats(
     FOREIGN KEY(exp_growth_rate)    REFERENCES ExpGrowth(growth_rate)
 );
 ALTER TABLE UniversalPokeID
-    ADD stat_id SMALLINT UNSIGNED NOT NULL;
+    ADD base_stat_id SMALLINT UNSIGNED NOT NULL;
 
 CREATE TABLE PokeBreeding(
     id              SMALLINT UNSIGNED   NOT NULL,
@@ -58,7 +58,7 @@ CREATE TABLE NationalPokeDex(
     FOREIGN KEY(universal_id)   REFERENCES UniversalPokeID(id),
     FOREIGN KEY(type_1)         REFERENCES Type(name),
     FOREIGN KEY(type_2)         REFERENCES Type(name),
-    FOREIGN KEY(stat_id)        REFERENCES PokeStats(id),
+    FOREIGN KEY(stat_id)        REFERENCES BasePokeStats(id),
     FOREIGN KEY(evolution)      REFERENCES NationalPokeDex(id)
 );
 ALTER TABLE UniversalPokeID
@@ -82,7 +82,7 @@ CREATE TABLE RegionalForm(
     FOREIGN KEY(region)         REFERENCES Region(id),
     FOREIGN KEY(type_1)         REFERENCES Type(name),
     FOREIGN KEY(type_2)         REFERENCES Type(name),
-    FOREIGN KEY(stat_id)        REFERENCES PokeStats(id)
+    FOREIGN KEY(stat_id)        REFERENCES BasePokeStats(id)
 );
 ALTER TABLE UniversalPokeID
     ADD region_form_id SMALLINT UNSIGNED DEFAULT NULL;
@@ -113,7 +113,7 @@ CREATE TABLE AlternateForm(
     FOREIGN KEY(universal_id)   REFERENCES UniversalPokeID(id),
     FOREIGN KEY(type_1)         REFERENCES Type(name),
     FOREIGN KEY(type_2)         REFERENCES Type(name),
-    FOREIGN KEY(stat_id)        REFERENCES PokeStats(id),
+    FOREIGN KEY(stat_id)        REFERENCES BasePokeStats(id),
     FOREIGN KEY(item_id)        REFERENCES ItemDetails(id)
 );
 ALTER TABLE UniversalPokeID
