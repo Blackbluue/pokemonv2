@@ -3,6 +3,7 @@ SOURCE drop_tables.sql;
 SOURCE static_tables.sql;
 SOURCE battle_tables.sql;
 SOURCE regional_tables.sql;
-SOURCE item_tables.sql;
+SOURCE item_base_tables.sql;
+SOURCE item_types_tables.sql;
 SOURCE pokedex_tables.sql;
 SOURCE instance_pokemon_tables.sql;
