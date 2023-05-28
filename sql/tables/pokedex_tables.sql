@@ -101,6 +101,7 @@ ALTER TABLE UniversalPokeID
 CREATE TABLE AlternateForm(
     id              SMALLINT UNSIGNED       NOT NULL,
     universal_id    SMALLINT UNSIGNED       NOT NULL,
+    game            VARCHAR(16)             NOT NULL,
     moniker         VARCHAR(16)             NOT NULL,
     type_1          VARCHAR(16)             NOT NULL,
     type_2          VARCHAR(16)             DEFAULT NULL,
@@ -108,13 +109,14 @@ CREATE TABLE AlternateForm(
     height          DECIMAL(6,2) UNSIGNED   NOT NULL COMMENT 'measured in meters',
     weight          DECIMAL(6,2) UNSIGNED   NOT NULL COMMENT 'measured in kilograms',
     description     TINYTEXT                NOT NULL,
-    item_id         SMALLINT UNSIGNED,
+    item_name       VARCHAR(16),
     PRIMARY KEY(id),
-    FOREIGN KEY(universal_id)   REFERENCES UniversalPokeID(id),
-    FOREIGN KEY(type_1)         REFERENCES Type(name),
-    FOREIGN KEY(type_2)         REFERENCES Type(name),
-    FOREIGN KEY(stat_id)        REFERENCES BasePokeStats(id),
-    FOREIGN KEY(item_id)        REFERENCES ItemDetails(id)
+    FOREIGN KEY(universal_id)       REFERENCES UniversalPokeID(id),
+    FOREIGN KEY(game)               REFERENCES Game(display_name),
+    FOREIGN KEY(type_1)             REFERENCES Type(name),
+    FOREIGN KEY(type_2)             REFERENCES Type(name),
+    FOREIGN KEY(stat_id)            REFERENCES BasePokeStats(id),
+    FOREIGN KEY(item_name, game)    REFERENCES ItemDetails(name, game)
 );
 ALTER TABLE UniversalPokeID
     ADD alt_form_id SMALLINT UNSIGNED DEFAULT NULL;
