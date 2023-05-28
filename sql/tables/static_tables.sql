@@ -1,9 +1,8 @@
 CREATE TABLE Game(
-    id              TINYINT UNSIGNED   NOT NULL,
     display_name    VARCHAR(16)        NOT NULL,
     abbreviation    VARCHAR(5)         NOT NULL,
     generation      TINYINT UNSIGNED   NOT NULL,
-    PRIMARY KEY(id)
+    PRIMARY KEY(display_name)
 );
 
 CREATE TABLE Type(
@@ -30,13 +29,6 @@ CREATE TABLE Ability(
 -- Must insert records into this table before any table that adds a reference column to it
 CREATE TABLE UniversalPokeID(
     id SMALLINT UNSIGNED   NOT NULL,
-    PRIMARY KEY(id)
-);
-
--- TODO: manually add in values to this table
-CREATE TABLE SpawnMethod(
-    id      TINYINT UNSIGNED NOT NULL,
-    method  TINYTEXT         NOT NULL,
     PRIMARY KEY(id)
 );
 

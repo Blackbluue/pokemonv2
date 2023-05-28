@@ -1,15 +1,15 @@
 CREATE TABLE MoveTargeting(
-    id      TINYINT UNSIGNED NOT NULL,
     name    VARCHAR(32),
-    PRIMARY KEY(id)
+    PRIMARY KEY(name)
 );
 
+-- TODO: define condition/effect look up table
 CREATE TABLE MoveExtraData(
-    id          SMALLINT UNSIGNED       NOT NULL,
+    name        VARCHAR(16)             NOT NULL,
     -- effect      TINYINT,
     -- effect_rate TINYINT     DEFAULT 100,
     -- condition   TINYINT,
-    target      TINYINT UNSIGNED        NOT NULL,
+    target      VARCHAR(32)             NOT NULL,
     crit_rate   DECIMAL(5, 2) UNSIGNED  DEFAULT 4.17,
     priority    TINYINT                 NOT NULL DEFAULT 0,
     recoil      DECIMAL(3, 2)           DEFAULT NULL,
@@ -29,25 +29,24 @@ CREATE TABLE MoveExtraData(
     block       BIT                     NOT NULL DEFAULT 1,
     copy        BIT                     NOT NULL DEFAULT 1,
     spc_eff     TINYTEXT                DEFAULT NULL,
-    PRIMARY KEY(id),
+    PRIMARY KEY(name),
     -- CONSTRAINT CHK_effect_rate CHECK(effect_rate <= 100),
     CONSTRAINT CHK_priority CHECK(priority >= -7 AND priority <= 5),
-    FOREIGN KEY(target)     REFERENCES MoveTargeting(id)
+    FOREIGN KEY(target)     REFERENCES MoveTargeting(name)
 );
 
 CREATE TABLE Move(
-    id          SMALLINT UNSIGNED       NOT NULL,
-    name        VARCHAR(16)             NOT NULL,
-    type        VARCHAR(16)             NOT NULL,
-    category    TINYINT UNSIGNED        NOT NULL COMMENT 'values 0, 1, 2 for physical, special, other',
-    pp          TINYINT UNSIGNED        NOT NULL,
+    name        VARCHAR(16)         NOT NULL,
+    type        VARCHAR(16)         NOT NULL,
+    category    BIT(2)              NOT NULL COMMENT 'values 0, 1, 2 for physical, special, other',
+    pp          TINYINT UNSIGNED    NOT NULL,
     base_power  TINYINT UNSIGNED,
-    accuracy    TINYINT UNSIGNED        DEFAULT 100,
-    text        TINYTEXT                NOT NULL,
-    PRIMARY KEY(id),
+    accuracy    TINYINT UNSIGNED    DEFAULT 100,
+    text        TINYTEXT            NOT NULL,
+    PRIMARY KEY(name),
     CONSTRAINT CHK_accuracy CHECK(accuracy <= 100),
-    CONSTRAINT CHK_pp CHECK(pp <= 64),
-    FOREIGN KEY(id)         REFERENCES MoveExtraData(id),
+    CONSTRAINT CHK_pp       CHECK(pp <= 64),
+    FOREIGN KEY(name)       REFERENCES MoveExtraData(name),
     FOREIGN KEY(type)       REFERENCES Type(name)
 );
 

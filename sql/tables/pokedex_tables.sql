@@ -88,13 +88,13 @@ ALTER TABLE UniversalPokeID
     ADD region_form_id SMALLINT UNSIGNED DEFAULT NULL;
 
 -- CREATE TABLE MoveLearnOrder(
---     universal_id    SMALLINT UNSIGNED       NOT NULL,
---     move_id     SMALLINT UNSIGNED   NOT NULL,
---     level       TINYINT UNSIGNED    NOT NULL        COMMENT '0 means learn on evolution',
+--     universal_id     SMALLINT UNSIGNED       NOT NULL,
+--     move             VARCHAR(16)   NOT NULL,
+--     level            TINYINT UNSIGNED    NOT NULL        COMMENT '0 means learn on evolution',
 --     PRIMARY KEY(pokemon_id, move_id, level),
 --     CONSTRAINT CHK_level CHECK(level <= 100),
 --     FOREIGN KEY(universal_id)   REFERENCES UniversalPokeID(id),
---     FOREIGN KEY(move_id)    REFERENCES Move(id)
+--     FOREIGN KEY(move)    REFERENCES Move(name)
 -- );
 
 -- TODO: make lookup table for alt form moniker names
