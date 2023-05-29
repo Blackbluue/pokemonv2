@@ -26,13 +26,6 @@ CREATE TABLE Ability(
     PRIMARY KEY(name)
 );
 
--- Must insert records into this table before any table that adds a reference column to it
-CREATE TABLE UniversalPokeID(
-    id SMALLINT UNSIGNED   NOT NULL,
-    ot_id   SMALLINT UNSIGNED,
-    PRIMARY KEY(id)
-);
-
 CREATE TABLE ExpGrowth(
     growth_rate VARCHAR(16) NOT NULL,
     PRIMARY KEY(growth_rate)
