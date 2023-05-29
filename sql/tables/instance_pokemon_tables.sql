@@ -62,7 +62,8 @@ CREATE TABLE MoveList(
 -- TODO: add ribbon information
 CREATE TABLE Pokemon(
     id              SMALLINT UNSIGNED   NOT NULL,
-    universal_id    SMALLINT UNSIGNED   NOT NULL,
+    nat_id     SMALLINT UNSIGNED   NOT NULL,
+    reg_form   TINYINT  UNSIGNED,
     ot_id           SMALLINT UNSIGNED,
     game            VARCHAR(16)         NOT NULL,
     ot_name         VARCHAR(16),
@@ -73,11 +74,11 @@ CREATE TABLE Pokemon(
     level           TINYINT UNSIGNED NOT NULL,
     PRIMARY KEY(id),
     CONSTRAINT CHK_level            CHECK(level <= 100),
-    FOREIGN KEY(id)                 REFERENCES PokeStats(id),
-    FOREIGN KEY(id)                 REFERENCES HiddenStats(id),
-    FOREIGN KEY(id)                 REFERENCES MoveList(id),
-    FOREIGN KEY(universal_id)       REFERENCES UniversalPokeID(id),
-    FOREIGN KEY(game)               REFERENCES Game(display_name),
-    FOREIGN KEY(ot_id, game)        REFERENCES Trainer(ot_id, game),
-    FOREIGN KEY(held_item, game)    REFERENCES ItemDetails(name, game)
+    FOREIGN KEY(id)                   REFERENCES PokeStats(id),
+    FOREIGN KEY(id)                   REFERENCES HiddenStats(id),
+    FOREIGN KEY(id)                   REFERENCES MoveList(id),
+    FOREIGN KEY(nat_id, reg_form)     REFERENCES UniversalPokeID(nat_id, reg_form),
+    FOREIGN KEY(game)                 REFERENCES Game(display_name),
+    FOREIGN KEY(ot_id, game)          REFERENCES Trainer(ot_id, game),
+    FOREIGN KEY(held_item, game)      REFERENCES ItemDetails(name, game)
 );
