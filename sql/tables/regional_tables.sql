@@ -1,21 +1,20 @@
 CREATE TABLE Region(
-    id              TINYINT UNSIGNED    NOT NULL,
-    name            VARCHAR(16)         NOT NULL,
-    game            VARCHAR(16)         NOT NULL,
-    PRIMARY KEY(id),
+    name    VARCHAR(16)     NOT NULL,
+    game    VARCHAR(16)     NOT NULL,
+    PRIMARY KEY(name, game),
     FOREIGN KEY(game) REFERENCES Game(display_name)
 );
 
 CREATE TABLE Location(
-    id      SMALLINT UNSIGNED   NOT NULL,
-    name    VARCHAR(16)         NOT NULL,
-    region  TINYINT  UNSIGNED   NOT NULL,
-    PRIMARY KEY(id),
-    FOREIGN KEY(region) REFERENCES Region(id)
+    name    VARCHAR(16)     NOT NULL,
+    region  VARCHAR(16)     NOT NULL,
+    game    VARCHAR(16)     NOT NULL,
+    PRIMARY KEY(name, region, game),
+    FOREIGN KEY(region, game) REFERENCES Region(name, game)
 );
 
 CREATE TABLE SpawnMethod(
-    method  VARCHAR(64)         NOT NULL,
+    method  VARCHAR(64)     NOT NULL,
     PRIMARY KEY(method)
 );
 

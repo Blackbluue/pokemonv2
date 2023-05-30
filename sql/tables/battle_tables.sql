@@ -50,11 +50,6 @@ CREATE TABLE Move(
     FOREIGN KEY(type)       REFERENCES Type(name)
 );
 
--- category:
-    -- Physical
-    -- Special
-    -- Other
-
 -- recoil: damage taken by user based on damage dealt to opponent
 
 -- crash: damage taken by the user if the move misses
