@@ -18,17 +18,18 @@ CREATE TABLE SpawnMethod(
     PRIMARY KEY(method)
 );
 
--- TODO: may move to pokedex file
--- CREATE TABLE SpawnLocation(
---     loc_id          SMALLINT UNSIGNED       NOT NULL,
---     region          TINYINT  UNSIGNED       NOT NULL,
---     poke_id         SMALLINT UNSIGNED       NOT NULL,
---     min_level       TINYINT  UNSIGNED       NOT NULL,
---     max_level       TINYINT  UNSIGNED       NOT NULL,
---     spawn_rate      DECIMAL(5, 2)  UNSIGNED NOT NULL,
---     spawn_method    VARCHAR(64)             NOT NULL,
---     PRIMARY KEY(loc_id, poke_id),
---     FOREIGN KEY(loc_id)       REFERENCES Location(id),
---     FOREIGN KEY(poke_id)      REFERENCES UniversalPokeID(id),
---     FOREIGN KEY(spawn_method) REFERENCES SpawnMethod(method)
--- );
+CREATE TABLE SpawnLocation(
+    loc_name        VARCHAR(16)                 NOT NULL,
+    region          VARCHAR(16)                 NOT NULL,
+    game            VARCHAR(16)                 NOT NULL,
+    poke_id         SMALLINT UNSIGNED           NOT NULL,
+    min_level       BIT(7)                      NOT NULL,
+    max_level       BIT(7)                      NOT NULL,
+    spawn_rate      DECIMAL(5, 2)  UNSIGNED     NOT NULL,
+    spawn_method    VARCHAR(64)                 NOT NULL,
+    PRIMARY KEY(loc_name, region, game, poke_id),
+    CONSTRAINT CHK_level                CHECK(max_level <= 100 AND min_level <= max_level),
+    FOREIGN KEY(loc_name, region, game) REFERENCES Location(name, region, game),
+    FOREIGN KEY(poke_id)                REFERENCES SpeciesStats(id),
+    FOREIGN KEY(spawn_method)           REFERENCES SpawnMethod(method)
+);

@@ -95,5 +95,9 @@ CREATE TABLE MoveLearnOrder(
     FOREIGN KEY(move)       REFERENCES Move(name)
 );
 
+-- TODO: add egg move table
+-- TODO: add tutor move table
+-- TODO: add TM move table
+
 -- btl_form.moniker
     -- Mega, Primal, Gigantamax
