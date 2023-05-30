@@ -1,8 +1,6 @@
--- TODO: rename tables to make more logical sense of their purpose
-
 -- TODO: move ev/exp info to separate table
 -- TODO: move ability info to separate table
-CREATE TABLE BasePokeStats(
+CREATE TABLE SpeciesStats(
     id              SMALLINT UNSIGNED   NOT NULL,
     ability_1       VARCHAR(16)         NOT NULL,
     ability_2       VARCHAR(16)         DEFAULT NULL,
@@ -39,7 +37,7 @@ CREATE TABLE PokeBreeding(
 
 -- Must insert records into this table before any table that adds a reference column to it
 -- TODO: make lookup table for regional/battle form moniker names
-CREATE TABLE UniversalPokeID(
+CREATE TABLE PokemonSpecies(
     nat_id          SMALLINT UNSIGNED   NOT NULL,
     reg_form        VARCHAR(16)         COMMENT 'NULL for no regional form',
     gnd_form        BIT                 COMMENT 'NULL for no change in gender form',
@@ -52,7 +50,7 @@ CREATE TABLE UniversalPokeID(
     type_2          VARCHAR(16),
     capture_rate    TINYINT  UNSIGNED   NOT NULL,
     PRIMARY KEY(nat_id, reg_form, gnd_form, spc_form, btl_form),
-    FOREIGN KEY(base_stat_id)   REFERENCES BasePokeStats(id),
+    FOREIGN KEY(base_stat_id)   REFERENCES SpeciesStats(id),
     FOREIGN KEY(breeding_id)    REFERENCES PokeBreeding(id),
     FOREIGN KEY(type_1)         REFERENCES Type(name),
     FOREIGN KEY(type_2)         REFERENCES Type(name)

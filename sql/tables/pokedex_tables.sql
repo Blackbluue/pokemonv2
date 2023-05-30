@@ -14,7 +14,7 @@ CREATE TABLE Pokedex(
     evo_spc_form    BIT(5),
     evo_btl_form    VARCHAR(16),
     PRIMARY KEY(nat_id, reg_form, gnd_form, spc_form, btl_form),
-    FOREIGN KEY(nat_id, reg_form, gnd_form, spc_form, btl_form)                     REFERENCES UniversalPokeID(nat_id, reg_form, gnd_form, spc_form, btl_form),
+    FOREIGN KEY(nat_id, reg_form, gnd_form, spc_form, btl_form)                     REFERENCES PokemonSpecies(nat_id, reg_form, gnd_form, spc_form, btl_form),
     FOREIGN KEY(evo_nat_id, evo_reg_form, evo_gnd_form, evo_spc_form, evo_btl_form) REFERENCES Pokedex(nat_id, reg_form, gnd_form, spc_form, btl_form)
 );
 
@@ -28,7 +28,7 @@ CREATE TABLE Pokedex(
 --     FOREIGN KEY(move)    REFERENCES Move(name)
 -- );
 
-CREATE TABLE RegionalPokedexDetails(
+CREATE TABLE RegionalPokedex(
     nat_id      SMALLINT UNSIGNED   NOT NULL,
     reg_form    VARCHAR(16)         COMMENT 'NULL for no regional form',
     gnd_form    BIT                 COMMENT 'NULL for no change in gender form',
