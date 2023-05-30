@@ -36,16 +36,16 @@ CREATE TABLE MoveExtraData(
 );
 
 CREATE TABLE Move(
-    name        VARCHAR(16)         NOT NULL,
-    type        VARCHAR(16)         NOT NULL,
-    category    BIT(2)              NOT NULL COMMENT 'values 0, 1, 2 for physical, special, other',
-    pp          TINYINT UNSIGNED    NOT NULL,
+    name        VARCHAR(16)                     NOT NULL,
+    type        VARCHAR(16)                     NOT NULL,
+    category    ENUM('phys', 'spec', 'other')   NOT NULL,
+    pp          TINYINT UNSIGNED                NOT NULL,
     base_power  TINYINT UNSIGNED,
-    accuracy    TINYINT UNSIGNED    DEFAULT 100,
-    text        TINYTEXT            NOT NULL,
+    accuracy    BIT(7)                          DEFAULT 100,
+    text        TINYTEXT                        NOT NULL,
     PRIMARY KEY(name),
     CONSTRAINT CHK_accuracy CHECK(accuracy <= 100),
-    CONSTRAINT CHK_pp       CHECK(pp <= 64),
+    CONSTRAINT CHK_pp       CHECK(pp <= 40),
     FOREIGN KEY(name)       REFERENCES MoveExtraData(name),
     FOREIGN KEY(type)       REFERENCES Type(name)
 );

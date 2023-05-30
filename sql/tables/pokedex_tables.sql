@@ -1,7 +1,7 @@
 CREATE TABLE Pokedex(
     nat_id          SMALLINT UNSIGNED                   NOT NULL,
     reg_form        VARCHAR(16)                         COMMENT 'NULL for no regional form',
-    gnd_form        BIT                                 COMMENT 'NULL for no change in gender form',
+    gnd_form        ENUM('M', 'F')                      COMMENT 'NULL for no change in gender form',
     spc_form        BIT(5)                              COMMENT 'NULL for no special form',
     btl_form        VARCHAR(16)                         COMMENT 'NULL for no battle form',
     classification  VARCHAR(16)                         NOT NULL,
@@ -10,7 +10,7 @@ CREATE TABLE Pokedex(
     owned           ENUM("unknown", "seen", "owned")    NOT NULL,
     evo_nat_id      SMALLINT UNSIGNED,
     evo_reg_form    VARCHAR(16),
-    evo_gnd_form    BIT,
+    evo_gnd_form    ENUM('M', 'F'),
     evo_spc_form    BIT(5),
     evo_btl_form    VARCHAR(16),
     PRIMARY KEY(nat_id, reg_form, gnd_form, spc_form, btl_form),
@@ -31,7 +31,7 @@ CREATE TABLE Pokedex(
 CREATE TABLE RegionalPokedex(
     nat_id      SMALLINT UNSIGNED   NOT NULL,
     reg_form    VARCHAR(16)         COMMENT 'NULL for no regional form',
-    gnd_form    BIT                 COMMENT 'NULL for no change in gender form',
+    gnd_form    ENUM('M', 'F')      COMMENT 'NULL for no change in gender form',
     spc_form    BIT(5)              COMMENT 'NULL for no special form',
     btl_form    VARCHAR(16),
     dex_region  TINYINT  UNSIGNED   NOT NULL,

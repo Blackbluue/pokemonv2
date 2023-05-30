@@ -1,14 +1,15 @@
 -- TODO: add lookup table for flavors
 CREATE TABLE Nature(
     name            VARCHAR(16) NOT NULL,
-    stat_up         BIT(3) COMMENT '0-4 = atk, def, sp_atk, sp_def, spd in order',
-    stat_down       BIT(3),
+    stat_up         ENUM('atk', 'def', 'sp_atk', 'sp_def', 'spd'),
+    stat_down       ENUM('atk', 'def', 'sp_atk', 'sp_def', 'spd'),
     fav_flavor      VARCHAR(16) NOT NULL,
     hate_flavor     VARCHAR(16) NOT NULL,
     PRIMARY KEY(name)
 );
 
 -- TODO: decide if these stats should also include ev/IV/nature changes
+-- TODO: might remove stats entirely and calculate them when needed
 CREATE TABLE PokeStats(
     id              SMALLINT UNSIGNED   NOT NULL,
     nature          VARCHAR(16)         NOT NULL,
@@ -64,7 +65,7 @@ CREATE TABLE Pokemon(
     id              SMALLINT UNSIGNED   NOT NULL,
     nat_id          SMALLINT UNSIGNED   NOT NULL,
     reg_form        VARCHAR(16)         COMMENT 'NULL for no regional form',
-    gender          BIT                 COMMENT '0 for male, 1 for female, NULL for genderless',
+    gender          ENUM('M', 'F')      COMMENT '0 for male, 1 for female, NULL for genderless',
     spc_form        BIT(5)              COMMENT 'NULL for no special form',
     btl_form        VARCHAR(16),
     ot_id           SMALLINT UNSIGNED,
@@ -73,7 +74,7 @@ CREATE TABLE Pokemon(
     nickname        VARCHAR(16),
     held_item       VARCHAR(16),
     date_met        DATE,
-    level           TINYINT UNSIGNED NOT NULL,
+    level           BIT(7)              NOT NULL,
     PRIMARY KEY(id),
     CONSTRAINT CHK_level                                        CHECK(level <= 100),
     FOREIGN KEY(id)                                             REFERENCES PokeStats(id),

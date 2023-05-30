@@ -40,7 +40,7 @@ CREATE TABLE PokeBreeding(
 CREATE TABLE PokemonSpecies(
     nat_id          SMALLINT UNSIGNED   NOT NULL,
     reg_form        VARCHAR(16)         COMMENT 'NULL for no regional form',
-    gnd_form        BIT                 COMMENT 'NULL for no change in gender form',
+    gnd_form        ENUM('M', 'F')      COMMENT 'NULL for no change in gender form',
     spc_form        BIT(5)              COMMENT 'NULL for no special form',
     btl_form        VARCHAR(16),
     name            VARCHAR(16)         NOT NULL COMMENT 'changes in special form name included here',
