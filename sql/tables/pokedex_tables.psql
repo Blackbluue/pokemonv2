@@ -1,0 +1,22 @@
+CREATE TABLE Pokedex(
+    poke_id         SMALLINT        NOT NULL,
+    classification  VARCHAR(16)     NOT NULL,
+    height          DECIMAL(6,2)    NOT NULL, -- measured in meters
+    weight          DECIMAL(6,2)    NOT NULL, -- measured in kilograms
+    owned           pokedex_status  NOT NULL,
+    evo_id          SMALLINT,
+    PRIMARY KEY(poke_id),
+    FOREIGN KEY(poke_id)    REFERENCES SpeciesID(id),
+    FOREIGN KEY(evo_id)     REFERENCES Pokedex(poke_id)
+);
+
+-- TODO: add language based descriptions, currently assumes EN
+CREATE TABLE RegionalPokedex(
+    poke_id     SMALLINT    NOT NULL,
+    game        VARCHAR(16) NOT NULL,
+    reg_id      SMALLINT    NOT NULL,
+    description TEXT        NOT NULL,
+    PRIMARY KEY(poke_id, game),
+    FOREIGN KEY(poke_id)    REFERENCES Pokedex(poke_id),
+    FOREIGN KEY(game)       REFERENCES Game(display_name)
+);

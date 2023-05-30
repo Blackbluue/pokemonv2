@@ -1,0 +1,9 @@
+DROP TYPE IF EXISTS pokedex_status;
+DROP TYPE IF EXISTS gender;
+DROP TYPE IF EXISTS stat_name;
+DROP TYPE IF EXISTS move_category;
+
+CREATE TYPE pokedex_status AS ENUM('unknown', 'seen', 'owned');
+CREATE TYPE gender AS ENUM('M', 'F');
+CREATE TYPE stat_name AS ENUM('hp', 'atk', 'def', 'sp_atk', 'sp_def', 'spd');
+CREATE TYPE move_category AS ENUM('phys', 'spec', 'other');
