@@ -14,6 +14,8 @@ CREATE TABLE Pokedex(
     evo_spc_form    BIT(5),
     evo_btl_form    VARCHAR(16),
     PRIMARY KEY(nat_id, reg_form, gnd_form, spc_form, btl_form),
+    FOREIGN KEY(reg_form)                                                           REFERENCES RegionalForm(moniker),
+    FOREIGN KEY(btl_form)                                                           REFERENCES BattleForm(moniker),
     FOREIGN KEY(nat_id, reg_form, gnd_form, spc_form, btl_form)                     REFERENCES PokemonSpecies(nat_id, reg_form, gnd_form, spc_form, btl_form),
     FOREIGN KEY(evo_nat_id, evo_reg_form, evo_gnd_form, evo_spc_form, evo_btl_form) REFERENCES Pokedex(nat_id, reg_form, gnd_form, spc_form, btl_form)
 );
@@ -28,6 +30,8 @@ CREATE TABLE RegionalPokedex(
     reg_id      SMALLINT UNSIGNED   NOT NULL,
     description TINYTEXT            NOT NULL,
     PRIMARY KEY(nat_id, reg_form, gnd_form, spc_form, btl_form, dex_region),
-    FOREIGN KEY(nat_id, reg_form, gnd_form, spc_form, btl_form)       REFERENCES Pokedex(nat_id, reg_form, gnd_form, spc_form, btl_form),
-    FOREIGN KEY(dex_region)    REFERENCES Region(id)
+    FOREIGN KEY(reg_form)                                               REFERENCES RegionalForm(moniker),
+    FOREIGN KEY(btl_form)                                               REFERENCES BattleForm(moniker),
+    FOREIGN KEY(nat_id, reg_form, gnd_form, spc_form, btl_form)         REFERENCES Pokedex(nat_id, reg_form, gnd_form, spc_form, btl_form),
+    FOREIGN KEY(dex_region)                                             REFERENCES Region(id)
 );

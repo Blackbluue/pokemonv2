@@ -26,17 +26,31 @@ CREATE TABLE SpeciesStats(
     FOREIGN KEY(exp_growth_rate)    REFERENCES ExpGrowth(growth_rate)
 );
 
--- TODO: add egg group lookup table
+CREATE TABLE EggGroup(
+    name            VARCHAR(16)         NOT NULL,
+    PRIMARY KEY(name)
+);
+
 CREATE TABLE PokeBreeding(
     id              SMALLINT UNSIGNED   NOT NULL,
     egg_cycles      TINYINT  UNSIGNED   NOT NULL,
     egg_group_1     VARCHAR(16)         NOT NULL,
     egg_group_2     VARCHAR(16)         DEFAULT NULL,
-    PRIMARY KEY(id)
+    PRIMARY KEY(id),
+    FOREIGN KEY(egg_group_1) REFERENCES EggGroup(name),
+    FOREIGN KEY(egg_group_2) REFERENCES EggGroup(name)
 );
 
--- Must insert records into this table before any table that adds a reference column to it
--- TODO: make lookup table for regional/battle form moniker names
+CREATE TABLE RegionalForm(
+    moniker         VARCHAR(16)         NOT NULL,
+    PRIMARY KEY(moniker)
+);
+
+CREATE TABLE BattleForm(
+    moniker         VARCHAR(16)         NOT NULL,
+    PRIMARY KEY(moniker)
+);
+
 CREATE TABLE PokemonSpecies(
     nat_id          SMALLINT UNSIGNED   NOT NULL,
     reg_form        VARCHAR(16)         COMMENT 'NULL for no regional form',
@@ -50,6 +64,8 @@ CREATE TABLE PokemonSpecies(
     type_2          VARCHAR(16),
     capture_rate    TINYINT  UNSIGNED   NOT NULL,
     PRIMARY KEY(nat_id, reg_form, gnd_form, spc_form, btl_form),
+    FOREIGN KEY(reg_form)       REFERENCES RegionalForm(moniker),
+    FOREIGN KEY(btl_form)       REFERENCES BattleForm(moniker),
     FOREIGN KEY(base_stat_id)   REFERENCES SpeciesStats(id),
     FOREIGN KEY(breeding_id)    REFERENCES PokeBreeding(id),
     FOREIGN KEY(type_1)         REFERENCES Type(name),
@@ -65,9 +81,10 @@ CREATE TABLE MoveLearnOrder(
     move            VARCHAR(16)         NOT NULL,
     level           BIT(7)              NOT NULL        COMMENT '0 means learn on evolution',
     PRIMARY KEY(nat_id, reg_form, gnd_form, spc_form, move, level),
-    CONSTRAINT CHK_level                                            CHECK(level <= 100),
-    FOREIGN KEY(nat_id, reg_form, gnd_form, spc_form)               REFERENCES PokemonSpecies(nat_id, reg_form, gnd_form, spc_form),
-    FOREIGN KEY(move)                                               REFERENCES Move(name)
+    CONSTRAINT CHK_level                                CHECK(level <= 100),
+    FOREIGN KEY(reg_form)                               REFERENCES RegionalForm(moniker),
+    FOREIGN KEY(nat_id, reg_form, gnd_form, spc_form)   REFERENCES PokemonSpecies(nat_id, reg_form, gnd_form, spc_form),
+    FOREIGN KEY(move)                                   REFERENCES Move(name)
 );
 
 -- btl_form.moniker

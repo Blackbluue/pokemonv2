@@ -80,6 +80,8 @@ CREATE TABLE Pokemon(
     FOREIGN KEY(id)                                             REFERENCES PokeStats(id),
     FOREIGN KEY(id)                                             REFERENCES HiddenStats(id),
     FOREIGN KEY(id)                                             REFERENCES MoveList(id),
+    FOREIGN KEY(reg_form)                                       REFERENCES RegionalForm(moniker),
+    FOREIGN KEY(btl_form)                                       REFERENCES BattleForm(moniker),
     FOREIGN KEY(nat_id, reg_form, gender, spc_form, btl_form)   REFERENCES PokemonSpecies(nat_id, reg_form, gnd_form, spc_form, btl_form),
     FOREIGN KEY(game)                                           REFERENCES Game(display_name),
     FOREIGN KEY(ot_id, game)                                    REFERENCES Trainer(ot_id, game),

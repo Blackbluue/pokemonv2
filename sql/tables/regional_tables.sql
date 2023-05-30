@@ -1,8 +1,7 @@
 CREATE TABLE Region(
     id              TINYINT UNSIGNED    NOT NULL,
     name            VARCHAR(16)         NOT NULL,
-    game            VARCHAR(16)    NOT NULL,
-    form_moniker    VARCHAR(16),
+    game            VARCHAR(16)         NOT NULL,
     PRIMARY KEY(id),
     FOREIGN KEY(game) REFERENCES Game(display_name)
 );
