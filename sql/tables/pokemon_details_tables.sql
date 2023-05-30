@@ -56,5 +56,19 @@ CREATE TABLE PokemonSpecies(
     FOREIGN KEY(type_2)         REFERENCES Type(name)
 );
 
+-- WARNING: not sure if this table will link to PokemonSpecies correctly without blt_form, need testing
+CREATE TABLE MoveLearnOrder(
+    nat_id          SMALLINT UNSIGNED   NOT NULL,
+    reg_form        VARCHAR(16)         COMMENT 'NULL for no regional form',
+    gnd_form        ENUM('M', 'F')      COMMENT 'NULL for no change in gender form',
+    spc_form        BIT(5)              COMMENT 'NULL for no special form',
+    move            VARCHAR(16)         NOT NULL,
+    level           BIT(7)              NOT NULL        COMMENT '0 means learn on evolution',
+    PRIMARY KEY(nat_id, reg_form, gnd_form, spc_form, move, level),
+    CONSTRAINT CHK_level                                            CHECK(level <= 100),
+    FOREIGN KEY(nat_id, reg_form, gnd_form, spc_form)               REFERENCES PokemonSpecies(nat_id, reg_form, gnd_form, spc_form),
+    FOREIGN KEY(move)                                               REFERENCES Move(name)
+);
+
 -- btl_form.moniker
     -- Mega, Primal, Gigantamax

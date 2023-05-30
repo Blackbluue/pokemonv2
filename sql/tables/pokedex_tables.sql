@@ -18,16 +18,6 @@ CREATE TABLE Pokedex(
     FOREIGN KEY(evo_nat_id, evo_reg_form, evo_gnd_form, evo_spc_form, evo_btl_form) REFERENCES Pokedex(nat_id, reg_form, gnd_form, spc_form, btl_form)
 );
 
--- CREATE TABLE MoveLearnOrder(
---     universal_id     SMALLINT UNSIGNED       NOT NULL,
---     move             VARCHAR(16)   NOT NULL,
---     level            TINYINT UNSIGNED    NOT NULL        COMMENT '0 means learn on evolution',
---     PRIMARY KEY(pokemon_id, move_id, level),
---     CONSTRAINT CHK_level CHECK(level <= 100),
---     FOREIGN KEY(universal_id)   REFERENCES UniversalPokeID(id),
---     FOREIGN KEY(move)    REFERENCES Move(name)
--- );
-
 CREATE TABLE RegionalPokedex(
     nat_id      SMALLINT UNSIGNED   NOT NULL,
     reg_form    VARCHAR(16)         COMMENT 'NULL for no regional form',
