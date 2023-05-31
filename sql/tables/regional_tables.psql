@@ -4,6 +4,7 @@ CREATE TABLE Region(
     PRIMARY KEY(name, game),
     FOREIGN KEY(game) REFERENCES Game(display_name)
 );
+COMMENT ON TABLE Region IS 'A region is a geographical area in the Pokémon world.';
 
 CREATE TABLE Location(
     name    VARCHAR(16)     NOT NULL,
@@ -12,24 +13,27 @@ CREATE TABLE Location(
     PRIMARY KEY(name, region, game),
     FOREIGN KEY(region, game) REFERENCES Region(name, game)
 );
+COMMENT ON TABLE Location IS 'A location is a specific place in a region.';
 
 CREATE TABLE SpawnMethod(
     method  VARCHAR(64)     NOT NULL,
     PRIMARY KEY(method)
 );
+COMMENT ON TABLE SpawnMethod IS 'A spawn method is a way in which a Pokémon can be found in a location.';
 
 CREATE TABLE SpawnLocation(
-    loc_name        VARCHAR(16)                 NOT NULL,
-    region          VARCHAR(16)                 NOT NULL,
-    game            VARCHAR(16)                 NOT NULL,
-    poke_id         SMALLINT UNSIGNED           NOT NULL,
-    min_level       BIT(7)                      NOT NULL,
-    max_level       BIT(7)                      NOT NULL,
-    spawn_rate      DECIMAL(5, 2)  UNSIGNED     NOT NULL,
-    spawn_method    VARCHAR(64)                 NOT NULL,
+    loc_name        VARCHAR(16)     NOT NULL,
+    region          VARCHAR(16)     NOT NULL,
+    game            VARCHAR(16)     NOT NULL,
+    poke_id         SMALLINT        NOT NULL,
+    min_level       SMALLINT        NOT NULL,
+    max_level       SMALLINT        NOT NULL,
+    spawn_rate      DECIMAL(5, 2)   NOT NULL,
+    spawn_method    VARCHAR(64)     NOT NULL,
     PRIMARY KEY(loc_name, region, game, poke_id),
     CONSTRAINT CHK_level                CHECK(max_level <= 100 AND min_level <= max_level),
     FOREIGN KEY(loc_name, region, game) REFERENCES Location(name, region, game),
     FOREIGN KEY(poke_id)                REFERENCES SpeciesStats(id),
     FOREIGN KEY(spawn_method)           REFERENCES SpawnMethod(method)
 );
+COMMENT ON TABLE SpawnLocation IS 'Maps Pokémon to their spawn locations.';

@@ -1,0 +1,38 @@
+CREATE TABLE ItemType(
+    name    VARCHAR(16),
+    PRIMARY KEY(name)
+);
+COMMENT ON TABLE ItemType IS 'Types of items, e.g. "Poke Ball", "Potion", "TM", etc.';
+
+CREATE TABLE ItemDetails(
+    name            VARCHAR(16) NOT NULL,
+    game            VARCHAR(16) NOT NULL,
+    type            VARCHAR(16) NOT NULL,
+    fling_dmg       SMALLINT    DEFAULT 30,
+    purchase_price  SMALLINT,
+    sell_price      SMALLINT,
+    description     TEXT        NOT NULL,
+    details         TEXT,
+    PRIMARY KEY(name, game),
+    FOREIGN KEY(type) REFERENCES ItemType(name),
+    FOREIGN KEY(game) REFERENCES Game(display_name)
+);
+COMMENT ON TABLE ItemDetails IS 'Details about each item, e.g. "Poke Ball" has a fling damage of 30, can be bought for 200, and sold for 100.';
+COMMENT ON COLUMN ItemDetails.fling_dmg IS 'The amount of damage done when the item is used as a fling attack.';
+COMMENT ON COLUMN ItemDetails.purchase_price IS 'NULL values means the item cannot be bought.';
+COMMENT ON COLUMN ItemDetails.sell_price IS 'NULL values means the item cannot be sold.';
+COMMENT ON COLUMN ItemDetails.description IS 'The in-game flavor text for the item.';
+COMMENT ON COLUMN ItemDetails.details IS 'Details on the item''s use/purpose.';
+
+CREATE TABLE Bag(
+    item_name   VARCHAR(16) NOT NULL,
+    trainer_id  SMALLINT    NOT NULL,
+    game        VARCHAR(16) NOT NULL,
+    count       SMALLINT    NOT NULL DEFAULT 1,
+    PRIMARY KEY(item_name, trainer_id),
+    CONSTRAINT CHK_count            CHECK(count <= 99),
+    FOREIGN KEY(item_name, game)    REFERENCES ItemDetails(name, game),
+    FOREIGN KEY(trainer_id, game)   REFERENCES Trainer(ot_id, game),
+    FOREIGN KEY(game)               REFERENCES Game(display_name)
+);
+COMMENT ON TABLE Bag IS 'A trainer''s bag, which contains items.';
