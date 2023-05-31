@@ -1,79 +1,83 @@
 -- TODO: add lookup table for flavors
 CREATE TABLE Nature(
     name            VARCHAR(16) NOT NULL,
-    stat_up         stat_name,
-    stat_down       stat_name,
+    stat_up         stat_name   DEFAULT NULL,
+    stat_down       stat_name   DEFAULT NULL,
     fav_flavor      VARCHAR(16) NOT NULL,
     hate_flavor     VARCHAR(16) NOT NULL,
     PRIMARY KEY(name)
 );
+COMMENT ON TABLE Nature IS 'A nature is a characteristic of a Pokémon that affects the growth of its stats.';
 
 -- TODO: decide if these stats should also include ev/IV/nature changes
 -- TODO: might remove stats entirely and calculate them when needed
 CREATE TABLE PokeStats(
-    id              SMALLINT   NOT NULL,
-    nature          VARCHAR(16)         NOT NULL,
-    ability         VARCHAR(16)         NOT NULL,
-    stats_hp        SMALLINT   NOT NULL,
-    stats_atk       SMALLINT   NOT NULL,
-    stats_def       SMALLINT   NOT NULL,
-    stats_sp_atk    SMALLINT   NOT NULL,
-    stats_sp_def    SMALLINT   NOT NULL,
-    stats_spd       SMALLINT   NOT NULL,
+    id              SMALLINT    NOT NULL,
+    nature          VARCHAR(16) NOT NULL,
+    ability         VARCHAR(16) NOT NULL,
+    stats_hp        SMALLINT    NOT NULL,
+    stats_atk       SMALLINT    NOT NULL,
+    stats_def       SMALLINT    NOT NULL,
+    stats_sp_atk    SMALLINT    NOT NULL,
+    stats_sp_def    SMALLINT    NOT NULL,
+    stats_spd       SMALLINT    NOT NULL,
     PRIMARY KEY(id),
     FOREIGN KEY(nature)           REFERENCES Nature(name),
     FOREIGN KEY(ability)          REFERENCES Ability(name)
 );
+COMMENT ON TABLE PokeStats IS 'The stats of a Pokémon.';
 
 CREATE TABLE HiddenStats(
     id          SMALLINT    NOT NULL,
     happiness   SMALLINT    NOT NULL,
-    ev_hp       SMALLINT    NOT NULL,
-    ev_atk      SMALLINT    NOT NULL,
-    ev_def      SMALLINT    NOT NULL,
-    ev_sp_atk   SMALLINT    NOT NULL,
-    ev_sp_def   SMALLINT    NOT NULL,
-    ev_spd      SMALLINT    NOT NULL,
-    iv_hp       BIT(5)      NOT NULL,
-    iv_atk      BIT(5)      NOT NULL,
-    iv_def      BIT(5)      NOT NULL,
-    iv_dp_atk   BIT(5)      NOT NULL,
-    iv_sp_def   BIT(5)      NOT NULL,
-    iv_spd      BIT(5)      NOT NULL,
+    ev_hp       SMALLINT    NOT NULL    DEFAULT 0,
+    ev_atk      SMALLINT    NOT NULL    DEFAULT 0,
+    ev_def      SMALLINT    NOT NULL    DEFAULT 0,
+    ev_sp_atk   SMALLINT    NOT NULL    DEFAULT 0,
+    ev_sp_def   SMALLINT    NOT NULL    DEFAULT 0,
+    ev_spd      SMALLINT    NOT NULL    DEFAULT 0,
+    iv_hp       BIT(5)      NOT NULL    DEFAULT 1::bit(5),
+    iv_atk      BIT(5)      NOT NULL    DEFAULT 1::bit(5),
+    iv_def      BIT(5)      NOT NULL    DEFAULT 1::bit(5),
+    iv_dp_atk   BIT(5)      NOT NULL    DEFAULT 1::bit(5),
+    iv_sp_def   BIT(5)      NOT NULL    DEFAULT 1::bit(5),
+    iv_spd      BIT(5)      NOT NULL    DEFAULT 1::bit(5),
     PRIMARY KEY(id)
 );
+COMMENT ON TABLE HiddenStats IS 'The hidden stats of a Pokémon.';
 
 CREATE TABLE MoveList(
-    id              SMALLINT        NOT NULL,
-    move_1          VARCHAR(16)     NOT NULL,
-    move_1_pp_up    BIT(2)          NOT NULL,
-    move_2          VARCHAR(16),
-    move_2_pp_up    BIT(2),
-    move_3          VARCHAR(16),
-    move_3_pp_up    BIT(2),
-    move_4          VARCHAR(16),
-    move_4_pp_up    BIT(2),
+    id              SMALLINT    NOT NULL,
+    move_1          VARCHAR(16) NOT NULL,
+    move_1_pp_up    BIT(2)      NOT NULL    DEFAULT 0::bit(2),
+    move_2          VARCHAR(16) DEFAULT NULL,
+    move_2_pp_up    BIT(2)      DEFAULT NULL,
+    move_3          VARCHAR(16) DEFAULT NULL,
+    move_3_pp_up    BIT(2)      DEFAULT NULL,
+    move_4          VARCHAR(16) DEFAULT NULL,
+    move_4_pp_up    BIT(2)      DEFAULT NULL,
     PRIMARY KEY(id),
     FOREIGN KEY(move_1) REFERENCES Move(name),
     FOREIGN KEY(move_2) REFERENCES Move(name),
     FOREIGN KEY(move_3) REFERENCES Move(name),
     FOREIGN KEY(move_4) REFERENCES Move(name)
 );
+COMMENT ON TABLE MoveList IS 'The current move list of a Pokémon.';
 
 -- TODO: add ribbon information
 CREATE TABLE Pokemon(
     id              SMALLINT        NOT NULL,
     nat_id          SMALLINT        NOT NULL,
-    reg_form        VARCHAR(16),                -- NULL for no regional form
-    gender          gender,                     -- 0 for male, 1 for female, NULL for genderless
-    spc_form        BIT(5),                     -- NULL for no special form
-    btl_form        VARCHAR(16),
-    ot_id           SMALLINT,
+    reg_form        VARCHAR(16)     DEFAULT NULL,
+    gender          gender,
+    spc_form        BIT(5)          DEFAULT NULL,
+    btl_form        VARCHAR(16)     DEFAULT NULL,
+    ot_id           SMALLINT        NOT NULL,
     game            VARCHAR(16)     NOT NULL,
-    ot_name         VARCHAR(16),
-    nickname        VARCHAR(16),
-    held_item       VARCHAR(16),
-    date_met        DATE,
+    ot_name         VARCHAR(16)     DEFAULT NULL,
+    nickname        VARCHAR(16)     DEFAULT NULL,
+    held_item       VARCHAR(16)     DEFAULT NULL,
+    date_met        DATE            DEFAULT NULL,
     level           SMALLINT        NOT NULL,
     PRIMARY KEY(id),
     CONSTRAINT CHK_level                                        CHECK(level <= 100),
@@ -87,3 +91,10 @@ CREATE TABLE Pokemon(
     FOREIGN KEY(ot_id, game)                                    REFERENCES Trainer(ot_id, game),
     FOREIGN KEY(held_item, game)                                REFERENCES ItemDetails(name, game)
 );
+COMMENT ON TABLE Pokemon IS 'A single instance of a Pokémon.';
+COMMENT ON COLUMN Pokemon.reg_form IS 'NULL if this species has no regional forms.';
+COMMENT ON COLUMN Pokemon.spc_form IS 'NULL if this species has no special forms.';
+COMMENT ON COLUMN Pokemon.btl_form IS 'NULL if not currently in a battle form.';
+COMMENT ON COLUMN Pokemon.ot_id IS 'NULL if not owned by a trained.';
+COMMENT ON COLUMN Pokemon.ot_name IS 'NULL if not owned by a trainer.';
+COMMENT ON COLUMN Pokemon.date_met IS 'NULL if not owned by a trainer.';

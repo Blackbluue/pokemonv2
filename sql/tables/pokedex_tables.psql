@@ -9,6 +9,9 @@ CREATE TABLE Pokedex(
     FOREIGN KEY(poke_id)    REFERENCES SpeciesID(id),
     FOREIGN KEY(evo_id)     REFERENCES Pokedex(poke_id)
 );
+COMMENT ON TABLE Pokedex IS 'A table containing all the pokemon in the pokedex';
+COMMENT ON COLUMN Pokedex.height IS 'The height of the pokemon in meters';
+COMMENT ON COLUMN Pokedex.weight IS 'The weight of the pokemon in kilograms';
 
 -- TODO: add language based descriptions, currently assumes EN
 CREATE TABLE RegionalPokedex(
@@ -20,3 +23,4 @@ CREATE TABLE RegionalPokedex(
     FOREIGN KEY(poke_id)    REFERENCES Pokedex(poke_id),
     FOREIGN KEY(game)       REFERENCES Game(display_name)
 );
+COMMENT ON TABLE RegionalPokedex IS 'A table containing all the regional pokedex entries for each pokemon';

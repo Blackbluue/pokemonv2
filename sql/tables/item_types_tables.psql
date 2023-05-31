@@ -8,6 +8,7 @@ CREATE TABLE Pokeball(
     FOREIGN KEY(name, game)     REFERENCES ItemDetails(name, game),
     FOREIGN KEY(game)           REFERENCES Game(display_name)
 );
+COMMENT ON TABLE Pokeball IS 'A type of item that can be used to catch a wild Pokemon.';
 INSERT INTO ItemType(name) VALUES('Pokeball');
 
 CREATE TABLE HPRecovery(
@@ -19,6 +20,7 @@ CREATE TABLE HPRecovery(
     FOREIGN KEY(name, game) REFERENCES ItemDetails(name, game),
     FOREIGN KEY(game)       REFERENCES Game(display_name)
 );
+COMMENT ON TABLE HPRecovery IS 'A type of item that can be used to restore a Pokemon''s HP.';
 INSERT INTO ItemType(name) VALUES('HPRecovery');
 
 CREATE TABLE PPRecovery(
@@ -30,6 +32,7 @@ CREATE TABLE PPRecovery(
     FOREIGN KEY(name, game) REFERENCES ItemDetails(name, game),
     FOREIGN KEY(game)       REFERENCES Game(display_name)
 );
+COMMENT ON TABLE PPRecovery IS 'A type of item that can be used to restore a Pokemon''s PP.';
 INSERT INTO ItemType(name) VALUES('PPRecovery');
 
 CREATE TABLE KeyItem(
@@ -39,4 +42,5 @@ CREATE TABLE KeyItem(
     FOREIGN KEY(name, game) REFERENCES ItemDetails(name, game),
     FOREIGN KEY(game)       REFERENCES Game(display_name)
 );
+COMMENT ON TABLE KeyItem IS 'A type of item that is not consumed when used.';
 INSERT INTO ItemType(name) VALUES('Key Item');

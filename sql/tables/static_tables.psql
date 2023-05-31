@@ -4,11 +4,13 @@ CREATE TABLE Game(
     generation      SMALLINT    NOT NULL,
     PRIMARY KEY(display_name)
 );
+COMMENT ON TABLE Game IS 'A game in the Pokémon series.';
 
 CREATE TABLE Type(
     name    VARCHAR(16)   NOT NULL,
     PRIMARY KEY(name)
 );
+COMMENT ON TABLE Type IS 'A type for a Pokémon.';
 
 CREATE TABLE TypeMatchup(
     attacker    VARCHAR(16)        NOT NULL,
@@ -18,6 +20,7 @@ CREATE TABLE TypeMatchup(
     FOREIGN KEY(attacker) REFERENCES Type(name),
     FOREIGN KEY(defender) REFERENCES Type(name)
 );
+COMMENT ON TABLE TypeMatchup IS 'A multiplier for damage dealt by an attacker type to a defender type.';
 
 -- TODO: move this table into pokedex_tables.sql
 CREATE TABLE Ability(
@@ -25,8 +28,10 @@ CREATE TABLE Ability(
     flavor_text     TEXT        NOT NULL,
     PRIMARY KEY(name)
 );
+COMMENT ON TABLE Ability IS 'An ability for a Pokémon.';
 
 CREATE TABLE ExpGrowth(
     growth_rate VARCHAR(16)     NOT NULL,
     PRIMARY KEY(growth_rate)
 );
+COMMENT ON TABLE ExpGrowth IS 'The experience growth rate for a Pokémon.';
