@@ -64,7 +64,7 @@ CREATE TABLE Pokemon(
     FOREIGN KEY(id)                                             REFERENCES MoveList(id),
     FOREIGN KEY(nat_id, reg_form, gender, spc_form, btl_form)   REFERENCES PokemonSpecies(nat_id, reg_form, gnd_form, spc_form, btl_form),
     FOREIGN KEY(ot_id, game)                                    REFERENCES Trainer(ot_id, game),
-    FOREIGN KEY(held_item, game)                                REFERENCES ItemDetails(name, game)
+    FOREIGN KEY(held_item, game)                                REFERENCES Item(name, game)
 );
 COMMENT ON TABLE Pokemon IS 'A single instance of a Pokémon.';
 COMMENT ON COLUMN Pokemon.reg_form IS 'NULL if this species has no regional forms.';

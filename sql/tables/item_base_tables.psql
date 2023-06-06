@@ -3,7 +3,7 @@ CREATE TABLE ItemType(
 );
 COMMENT ON TABLE ItemType IS 'Types of items, e.g. "Poke Ball", "Potion", "TM", etc.';
 
-CREATE TABLE ItemDetails(
+CREATE TABLE Item(
     name            VARCHAR(16) NOT NULL,
     game            VARCHAR(16) NOT NULL    REFERENCES Game,
     type            VARCHAR(16) NOT NULL    REFERENCES ItemType,
@@ -14,12 +14,12 @@ CREATE TABLE ItemDetails(
     details         TEXT,
     PRIMARY KEY(name, game)
 );
-COMMENT ON TABLE ItemDetails IS 'Details about each item, e.g. "Poke Ball" has a fling damage of 30, can be bought for 200, and sold for 100.';
-COMMENT ON COLUMN ItemDetails.fling_dmg IS 'The amount of damage done when the item is used as a fling attack.';
-COMMENT ON COLUMN ItemDetails.purchase_price IS 'NULL values means the item cannot be bought.';
-COMMENT ON COLUMN ItemDetails.sell_price IS 'NULL values means the item cannot be sold.';
-COMMENT ON COLUMN ItemDetails.description IS 'The in-game flavor text for the item.';
-COMMENT ON COLUMN ItemDetails.details IS 'Details on the item''s use/purpose.';
+COMMENT ON TABLE Item IS 'Details about each item.';
+COMMENT ON COLUMN Item.fling_dmg IS 'The amount of damage done when the item is used as a fling attack.';
+COMMENT ON COLUMN Item.purchase_price IS 'NULL values means the item cannot be bought.';
+COMMENT ON COLUMN Item.sell_price IS 'NULL values means the item cannot be sold.';
+COMMENT ON COLUMN Item.description IS 'The in-game flavor text for the item.';
+COMMENT ON COLUMN Item.details IS 'Details on the item''s use/purpose.';
 
 CREATE TABLE Bag(
     item_name   VARCHAR(16) NOT NULL,
@@ -27,7 +27,7 @@ CREATE TABLE Bag(
     game        VARCHAR(16) NOT NULL            REFERENCES Game,
     count       SMALLINT    NOT NULL DEFAULT 1  CHECK(count <= 99),
     PRIMARY KEY(item_name, trainer_id),
-    FOREIGN KEY(item_name, game)    REFERENCES ItemDetails(name, game),
+    FOREIGN KEY(item_name, game)    REFERENCES Item(name, game),
     FOREIGN KEY(trainer_id, game)   REFERENCES Trainer(ot_id, game)
 );
 COMMENT ON TABLE Bag IS 'A trainer''s bag, which contains items.';
