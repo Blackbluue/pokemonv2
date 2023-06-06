@@ -1,8 +1,8 @@
 CREATE TABLE Pokedex(
     poke_id         SMALLINT        NOT NULL,
     classification  VARCHAR(16)     NOT NULL,
-    height          DECIMAL(6,2)    NOT NULL, -- measured in meters
-    weight          DECIMAL(6,2)    NOT NULL, -- measured in kilograms
+    height          DECIMAL(6,2)    NOT NULL,
+    weight          DECIMAL(6,2)    NOT NULL,
     owned           pokedex_status  NOT NULL,
     evo_id          SMALLINT,
     PRIMARY KEY(poke_id),

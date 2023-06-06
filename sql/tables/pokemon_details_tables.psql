@@ -1,4 +1,20 @@
 -- TODO: move ev/exp info to separate table
+CREATE TABLE SpeciesExpStats(
+    id              SMALLINT    NOT NULL,
+    ev_hp           BIT(2)      NOT NULL,
+    ev_atk          BIT(2)      NOT NULL,
+    ev_def          BIT(2)      NOT NULL,
+    ev_sp_atk       BIT(2)      NOT NULL,
+    ev_sp_def       BIT(2)      NOT NULL,
+    ev_spd          BIT(2)      NOT NULL,
+    exp_yield       SMALLINT    NOT NULL,
+    exp_growth_rate VARCHAR(16) NOT NULL,
+    happiness       SMALLINT    NOT NULL DEFAULT 50,
+    PRIMARY KEY(id),
+    FOREIGN KEY(exp_growth_rate)    REFERENCES ExpGrowth(growth_rate)
+);
+COMMENT ON TABLE SpeciesExpStats IS 'Contains all EV yields and exp info for a species';
+
 -- TODO: move ability info to separate table
 CREATE TABLE SpeciesStats(
     id              SMALLINT    NOT NULL,
@@ -11,14 +27,6 @@ CREATE TABLE SpeciesStats(
     stats_sp_atk    SMALLINT    NOT NULL,
     stats_sp_def    SMALLINT    NOT NULL,
     stats_spd       SMALLINT    NOT NULL,
-    ev_hp           BIT(2)      NOT NULL,
-    ev_atk          BIT(2)      NOT NULL,
-    ev_def          BIT(2)      NOT NULL,
-    ev_sp_atk       BIT(2)      NOT NULL,
-    ev_sp_def       BIT(2)      NOT NULL,
-    ev_spd          BIT(2)      NOT NULL,
-    exp_yield       SMALLINT    NOT NULL,
-    exp_growth_rate VARCHAR(16) NOT NULL,
     happiness       SMALLINT    NOT NULL DEFAULT 50,
     PRIMARY KEY(id),
     FOREIGN KEY(ability_1)          REFERENCES Ability(name),
@@ -64,6 +72,7 @@ CREATE TABLE PokemonSpecies(
     btl_form        VARCHAR(16)     DEFAULT NULL,
     name            VARCHAR(16)     NOT NULL,
     base_stat_id    SMALLINT        NOT NULL,
+    exp_stat_id     SMALLINT        NOT NULL,
     breeding_id     SMALLINT        DEFAULT NULL,
     type_1          VARCHAR(16)     NOT NULL,
     type_2          VARCHAR(16)     DEFAULT NULL,
@@ -72,6 +81,7 @@ CREATE TABLE PokemonSpecies(
     FOREIGN KEY(reg_form)       REFERENCES RegionalForm(moniker),
     FOREIGN KEY(btl_form)       REFERENCES BattleForm(moniker),
     FOREIGN KEY(base_stat_id)   REFERENCES SpeciesStats(id),
+    FOREIGN KEY(exp_stat_id)    REFERENCES SpeciesExpStats(id),
     FOREIGN KEY(breeding_id)    REFERENCES PokeBreeding(id),
     FOREIGN KEY(type_1)         REFERENCES Type(name),
     FOREIGN KEY(type_2)         REFERENCES Type(name)
