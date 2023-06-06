@@ -13,35 +13,30 @@ CREATE TABLE Type(
 COMMENT ON TABLE Type IS 'A type for a Pokémon.';
 
 CREATE TABLE TypeMatchup(
-    attacker    VARCHAR(16)        NOT NULL,
-    defender    VARCHAR(16)        NOT NULL,
-    multiplier  DECIMAL(2, 1)    NOT NULL DEFAULT 1,
-    PRIMARY KEY(attacker, defender),
-    FOREIGN KEY(attacker) REFERENCES Type(name),
-    FOREIGN KEY(defender) REFERENCES Type(name)
+    attacker    VARCHAR(16)     NOT NULL    REFERENCES Type,
+    defender    VARCHAR(16)     NOT NULL    REFERENCES Type,
+    multiplier  DECIMAL(2, 1)   NOT NULL    DEFAULT 1,
+    PRIMARY KEY(attacker, defender)
 );
 COMMENT ON TABLE TypeMatchup IS 'A multiplier for damage dealt by an attacker type to a defender type.';
 
 -- TODO: move this table into pokedex_tables.sql
 CREATE TABLE Ability(
-    name            VARCHAR(16) NOT NULL,
-    flavor_text     TEXT        NOT NULL,
-    PRIMARY KEY(name)
+    name            VARCHAR(16) NOT NULL    PRIMARY KEY,
+    flavor_text     TEXT        NOT NULL
 );
 COMMENT ON TABLE Ability IS 'An ability for a Pokémon.';
 
 CREATE TABLE ExpGrowth(
-    growth_rate VARCHAR(16)     NOT NULL,
-    PRIMARY KEY(growth_rate)
+    growth_rate VARCHAR(16)     NOT NULL    PRIMARY KEY
 );
 COMMENT ON TABLE ExpGrowth IS 'The experience growth rate for a Pokémon.';
 
 CREATE TABLE Nature(
-    name            VARCHAR(16) NOT NULL,
+    name            VARCHAR(16) NOT NULL    PRIMARY KEY,
     stat_up         stat_name   DEFAULT NULL,
     stat_down       stat_name   DEFAULT NULL,
-    fav_flavor      flavor NOT NULL,
-    hate_flavor     flavor NOT NULL,
-    PRIMARY KEY(name)
+    fav_flavor      flavor      NOT NULL,
+    hate_flavor     flavor      NOT NULL
 );
 COMMENT ON TABLE Nature IS 'A nature is a characteristic of a Pokémon that affects the growth of its stats.';

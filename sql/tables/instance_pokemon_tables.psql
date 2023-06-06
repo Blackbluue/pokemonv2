@@ -1,23 +1,20 @@
 -- TODO: decide if these stats should also include ev/IV/nature changes
 -- TODO: might remove stats entirely and calculate them when needed
 CREATE TABLE PokeStats(
-    id              SMALLINT    NOT NULL,
-    nature          VARCHAR(16) NOT NULL,
-    ability         VARCHAR(16) NOT NULL,
+    id              SMALLINT    NOT NULL    PRIMARY KEY,
+    nature          VARCHAR(16) NOT NULL    REFERENCES Nature,
+    ability         VARCHAR(16) NOT NULL    REFERENCES Ability,
     stats_hp        SMALLINT    NOT NULL,
     stats_atk       SMALLINT    NOT NULL,
     stats_def       SMALLINT    NOT NULL,
     stats_sp_atk    SMALLINT    NOT NULL,
     stats_sp_def    SMALLINT    NOT NULL,
-    stats_spd       SMALLINT    NOT NULL,
-    PRIMARY KEY(id),
-    FOREIGN KEY(nature)           REFERENCES Nature(name),
-    FOREIGN KEY(ability)          REFERENCES Ability(name)
+    stats_spd       SMALLINT    NOT NULL
 );
 COMMENT ON TABLE PokeStats IS 'The stats of a Pokémon.';
 
 CREATE TABLE HiddenStats(
-    id          SMALLINT    NOT NULL,
+    id          SMALLINT    NOT NULL    PRIMARY KEY,
     happiness   SMALLINT    NOT NULL,
     ev_hp       SMALLINT    NOT NULL    DEFAULT 0,
     ev_atk      SMALLINT    NOT NULL    DEFAULT 0,
@@ -30,53 +27,42 @@ CREATE TABLE HiddenStats(
     iv_def      BIT(5)      NOT NULL    DEFAULT 1::bit(5),
     iv_dp_atk   BIT(5)      NOT NULL    DEFAULT 1::bit(5),
     iv_sp_def   BIT(5)      NOT NULL    DEFAULT 1::bit(5),
-    iv_spd      BIT(5)      NOT NULL    DEFAULT 1::bit(5),
-    PRIMARY KEY(id)
+    iv_spd      BIT(5)      NOT NULL    DEFAULT 1::bit(5)
 );
 COMMENT ON TABLE HiddenStats IS 'The hidden stats of a Pokémon.';
 
 CREATE TABLE MoveList(
-    id              SMALLINT    NOT NULL,
-    move_1          VARCHAR(16) NOT NULL,
-    move_1_pp_up    BIT(2)      NOT NULL    DEFAULT 0::bit(2),
-    move_2          VARCHAR(16) DEFAULT NULL,
+    id              SMALLINT    NOT NULL        PRIMARY KEY,
+    move_1          VARCHAR(16) NOT NULL        REFERENCES Move,
+    move_1_pp_up    BIT(2)      NOT NULL        DEFAULT 0::bit(2),
+    move_2          VARCHAR(16) DEFAULT NULL    REFERENCES Move,
     move_2_pp_up    BIT(2)      DEFAULT NULL,
-    move_3          VARCHAR(16) DEFAULT NULL,
+    move_3          VARCHAR(16) DEFAULT NULL    REFERENCES Move,
     move_3_pp_up    BIT(2)      DEFAULT NULL,
-    move_4          VARCHAR(16) DEFAULT NULL,
-    move_4_pp_up    BIT(2)      DEFAULT NULL,
-    PRIMARY KEY(id),
-    FOREIGN KEY(move_1) REFERENCES Move(name),
-    FOREIGN KEY(move_2) REFERENCES Move(name),
-    FOREIGN KEY(move_3) REFERENCES Move(name),
-    FOREIGN KEY(move_4) REFERENCES Move(name)
+    move_4          VARCHAR(16) DEFAULT NULL    REFERENCES Move,
+    move_4_pp_up    BIT(2)      DEFAULT NULL
 );
 COMMENT ON TABLE MoveList IS 'The current move list of a Pokémon.';
 
 -- TODO: add ribbon information
 CREATE TABLE Pokemon(
-    id              SMALLINT        NOT NULL,
+    id              SMALLINT        NOT NULL        PRIMARY KEY     REFERENCES PokeStats,
     nat_id          SMALLINT        NOT NULL,
-    reg_form        VARCHAR(16)     DEFAULT NULL,
+    reg_form        VARCHAR(16)     DEFAULT NULL    REFERENCES RegionalForm,
     gender          gender,
     spc_form        BIT(5)          DEFAULT NULL,
-    btl_form        VARCHAR(16)     DEFAULT NULL,
+    btl_form        VARCHAR(16)     DEFAULT NULL    REFERENCES BattleForm,
     ot_id           SMALLINT        NOT NULL,
-    game            VARCHAR(16)     NOT NULL,
+    game            VARCHAR(16)     NOT NULL        REFERENCES Game,
     ot_name         VARCHAR(16)     DEFAULT NULL,
     nickname        VARCHAR(16)     DEFAULT NULL,
     held_item       VARCHAR(16)     DEFAULT NULL,
     date_met        DATE            DEFAULT NULL,
-    level           SMALLINT        NOT NULL,
-    PRIMARY KEY(id),
-    CONSTRAINT CHK_level                                        CHECK(level <= 100),
+    level           SMALLINT        NOT NULL    CHECK(level <= 100),
     FOREIGN KEY(id)                                             REFERENCES PokeStats(id),
     FOREIGN KEY(id)                                             REFERENCES HiddenStats(id),
     FOREIGN KEY(id)                                             REFERENCES MoveList(id),
-    FOREIGN KEY(reg_form)                                       REFERENCES RegionalForm(moniker),
-    FOREIGN KEY(btl_form)                                       REFERENCES BattleForm(moniker),
     FOREIGN KEY(nat_id, reg_form, gender, spc_form, btl_form)   REFERENCES PokemonSpecies(nat_id, reg_form, gnd_form, spc_form, btl_form),
-    FOREIGN KEY(game)                                           REFERENCES Game(display_name),
     FOREIGN KEY(ot_id, game)                                    REFERENCES Trainer(ot_id, game),
     FOREIGN KEY(held_item, game)                                REFERENCES ItemDetails(name, game)
 );

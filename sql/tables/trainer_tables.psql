@@ -1,16 +1,13 @@
 CREATE TABLE TrainerClass(
-    name VARCHAR(16) NOT NULL,
-    PRIMARY KEY(name)
+    name VARCHAR(16) NOT NULL   PRIMARY KEY
 );
 COMMENT ON TABLE TrainerClass IS 'The class of a trainer, e.g. "Youngster" or "Ace Trainer".';
 
 CREATE TABLE Trainer(
     name    VARCHAR(16) NOT NULL,
     ot_id   SMALLINT    NOT NULL,
-    game    VARCHAR(16) NOT NULL,
-    class   VARCHAR(16) NOT NULL,
-    PRIMARY KEY(ot_id, game),
-    FOREIGN KEY(game)   REFERENCES Game(display_name),
-    FOREIGN KEY(class)  REFERENCES TrainerClass(name)
+    game    VARCHAR(16) NOT NULL    REFERENCES Game,
+    class   VARCHAR(16) NOT NULL    REFERENCES TrainerClass,
+    PRIMARY KEY(ot_id, game)
 );
 COMMENT ON TABLE Trainer IS 'A trainer in the game.';

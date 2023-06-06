@@ -1,18 +1,17 @@
 CREATE TABLE MoveTargeting(
-    name    VARCHAR(32),
-    PRIMARY KEY(name)
+    name    VARCHAR(32) PRIMARY KEY
 );
 COMMENT ON TABLE MoveTargeting IS 'Defines the targeting of a move';
 
 -- TODO: define condition/effect look up table
 CREATE TABLE MoveExtraData(
-    name        VARCHAR(16)     NOT NULL,
+    name        VARCHAR(16)     NOT NULL            PRIMARY KEY,
     effect      SMALLINT        DEFAULT NULL,
-    effect_rate SMALLINT        DEFAULT NULL,
+    effect_rate SMALLINT        DEFAULT NULL        CHECK(effect_rate <= 100),
     condition   SMALLINT        DEFAULT NULL,
-    target      VARCHAR(32)     NOT NULL,
+    target      VARCHAR(32)     NOT NULL            REFERENCES MoveTargeting,
     crit_rate   DECIMAL(5, 2)   DEFAULT 4.17,
-    priority    SMALLINT        NOT NULL DEFAULT 0,
+    priority    SMALLINT        NOT NULL DEFAULT 0  CHECK(priority >= -7 AND priority <= 5),
     recoil      DECIMAL(3, 2)   DEFAULT NULL,
     crash       DECIMAL(3, 2)   DEFAULT NULL,
     contact     BOOLEAN         NOT NULL DEFAULT FALSE,
@@ -29,15 +28,11 @@ CREATE TABLE MoveExtraData(
     reflect     BOOLEAN         NOT NULL DEFAULT FALSE,
     block       BOOLEAN         NOT NULL DEFAULT TRUE,
     copy        BOOLEAN         NOT NULL DEFAULT TRUE,
-    spc_eff     TEXT            DEFAULT NULL,
-    PRIMARY KEY(name),
-    CONSTRAINT CHK_effect_rate CHECK(effect_rate <= 100),
-    CONSTRAINT CHK_priority CHECK(priority >= -7 AND priority <= 5),
-    FOREIGN KEY(target)     REFERENCES MoveTargeting(name)
+    spc_eff     TEXT            DEFAULT NULL
 );
 COMMENT ON TABLE MoveExtraData IS 'Defines the extra data for a move';
 COMMENT ON COLUMN MoveExtraData.priority IS
-    'Defines the priority of a move. Negative values are used for moves that are slower than normal. Positive values are used for moves that are faster than normal.';
+    'Defines the priority of a move. Negative values are slower. Positive values are faster.';
 COMMENT ON COLUMN MoveExtraData.recoil IS 'Defines the recoil damage of a move';
 COMMENT ON COLUMN MoveExtraData.crash IS 'Defines the crash damage of a move';
 COMMENT ON COLUMN MoveExtraData.contact IS 'Defines if a move makes contact';
@@ -57,18 +52,13 @@ COMMENT ON COLUMN MoveExtraData.copy IS 'Defines if a move can be copied by mirr
 COMMENT ON COLUMN MoveExtraData.spc_eff IS 'Defines the special effects of a move';
 
 CREATE TABLE Move(
-    name        VARCHAR(16)     NOT NULL,
-    type        VARCHAR(16)     NOT NULL,
+    name        VARCHAR(16)     NOT NULL    PRIMARY KEY     REFERENCES MoveExtraData,
+    type        VARCHAR(16)     NOT NULL    REFERENCES Type,
     category    move_category   NOT NULL,
-    pp          SMALLINT        NOT NULL,
+    pp          SMALLINT        NOT NULL    CHECK(pp <= 40),
     base_power  SMALLINT,
-    accuracy    SMALLINT        DEFAULT 100,
-    text        TEXT            NOT NULL,
-    PRIMARY KEY(name),
-    CONSTRAINT CHK_accuracy CHECK(accuracy <= 100),
-    CONSTRAINT CHK_pp       CHECK(pp <= 40),
-    FOREIGN KEY(name)       REFERENCES MoveExtraData(name),
-    FOREIGN KEY(type)       REFERENCES Type(name)
+    accuracy    SMALLINT        DEFAULT 100 CHECK(accuracy <= 100),
+    text        TEXT            NOT NULL
 );
 COMMENT ON TABLE Move IS 'Defines a move';
 

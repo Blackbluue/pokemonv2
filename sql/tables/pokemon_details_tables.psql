@@ -1,5 +1,5 @@
 CREATE TABLE SpeciesExpStats(
-    id              SMALLINT    NOT NULL,
+    id              SMALLINT    NOT NULL    PRIMARY KEY,
     ev_hp           BIT(2)      NOT NULL,
     ev_atk          BIT(2)      NOT NULL,
     ev_def          BIT(2)      NOT NULL,
@@ -7,90 +7,69 @@ CREATE TABLE SpeciesExpStats(
     ev_sp_def       BIT(2)      NOT NULL,
     ev_spd          BIT(2)      NOT NULL,
     exp_yield       SMALLINT    NOT NULL,
-    exp_growth_rate VARCHAR(16) NOT NULL,
-    happiness       SMALLINT    NOT NULL DEFAULT 50,
-    PRIMARY KEY(id),
-    FOREIGN KEY(exp_growth_rate)    REFERENCES ExpGrowth(growth_rate)
+    exp_growth_rate VARCHAR(16) NOT NULL    REFERENCES ExpGrowth,
+    happiness       SMALLINT    NOT NULL    DEFAULT 50
 );
 COMMENT ON TABLE SpeciesExpStats IS 'Contains all EV yields and exp info for a species';
 
 CREATE TABLE SpeciesAbility(
-    id              SMALLINT    NOT NULL,
-    ability_1       VARCHAR(16) NOT NULL,
-    ability_2       VARCHAR(16) DEFAULT NULL,
-    ability_hidden  VARCHAR(16) DEFAULT NULL,
-    PRIMARY KEY(id),
-    FOREIGN KEY(ability_1)          REFERENCES Ability(name),
-    FOREIGN KEY(ability_2)          REFERENCES Ability(name),
-    FOREIGN KEY(ability_hidden)     REFERENCES Ability(name)
+    id              SMALLINT    NOT NULL        PRIMARY KEY,
+    ability_1       VARCHAR(16) NOT NULL        REFERENCES Ability,
+    ability_2       VARCHAR(16) DEFAULT NULL    REFERENCES Ability,
+    ability_hidden  VARCHAR(16) DEFAULT NULL    REFERENCES Ability
 );
 COMMENT ON TABLE SpeciesAbility IS 'Contains possible abilities a species can have';
 
 CREATE TABLE SpeciesStats(
-    id              SMALLINT    NOT NULL,
+    id              SMALLINT    NOT NULL    PRIMARY KEY,
     stats_hp        SMALLINT    NOT NULL,
     stats_atk       SMALLINT    NOT NULL,
     stats_def       SMALLINT    NOT NULL,
     stats_sp_atk    SMALLINT    NOT NULL,
     stats_sp_def    SMALLINT    NOT NULL,
     stats_spd       SMALLINT    NOT NULL,
-    happiness       SMALLINT    NOT NULL DEFAULT 50,
-    PRIMARY KEY(id)
+    happiness       SMALLINT    NOT NULL    DEFAULT 50
 );
 COMMENT ON TABLE SpeciesStats IS 'Contains all stats and EV yields for a species';
 
 CREATE TABLE EggGroup(
-    name            VARCHAR(16)         NOT NULL,
-    PRIMARY KEY(name)
+    name            VARCHAR(16) NOT NULL    PRIMARY KEY
 );
 COMMENT ON TABLE EggGroup IS 'Contains all egg groups';
 
 CREATE TABLE PokeBreeding(
-    id              SMALLINT    NOT NULL,
+    id              SMALLINT    NOT NULL    PRIMARY KEY,
     egg_cycles      SMALLINT    NOT NULL,
-    egg_group_1     VARCHAR(16) NOT NULL,
-    egg_group_2     VARCHAR(16),
-    PRIMARY KEY(id),
-    FOREIGN KEY(egg_group_1) REFERENCES EggGroup(name),
-    FOREIGN KEY(egg_group_2) REFERENCES EggGroup(name)
+    egg_group_1     VARCHAR(16) NOT NULL    REFERENCES EggGroup,
+    egg_group_2     VARCHAR(16)             REFERENCES EggGroup
 );
 COMMENT ON TABLE PokeBreeding IS 'Contains all breeding information for a species';
 
 CREATE TABLE RegionalForm(
-    moniker     VARCHAR(16)     NOT NULL,
-    PRIMARY KEY(moniker)
+    moniker     VARCHAR(16)     NOT NULL    PRIMARY KEY
 );
 COMMENT ON TABLE RegionalForm IS 'Contains all regional forms for a species';
 
 CREATE TABLE BattleForm(
-    moniker     VARCHAR(16)     NOT NULL,
-    PRIMARY KEY(moniker)
+    moniker     VARCHAR(16)     NOT NULL    PRIMARY KEY
 );
 COMMENT ON TABLE BattleForm IS 'Contains all battle forms for a species';
 
 CREATE TABLE PokemonSpecies(
     nat_id          SMALLINT        NOT NULL,
-    reg_form        VARCHAR(16)     DEFAULT NULL,
+    reg_form        VARCHAR(16)     DEFAULT NULL    REFERENCES RegionalForm,
     gnd_form        gender          DEFAULT NULL,
     spc_form        BIT(5)          DEFAULT NULL,
-    btl_form        VARCHAR(16)     DEFAULT NULL,
+    btl_form        VARCHAR(16)     DEFAULT NULL    REFERENCES BattleForm,
     name            VARCHAR(16)     NOT NULL,
-    base_stat_id    SMALLINT        NOT NULL,
-    abilities_id    SMALLINT        NOT NULL,
-    exp_stat_id     SMALLINT        NOT NULL,
-    breeding_id     SMALLINT        DEFAULT NULL,
-    type_1          VARCHAR(16)     NOT NULL,
-    type_2          VARCHAR(16)     DEFAULT NULL,
+    base_stat_id    SMALLINT        NOT NULL        REFERENCES SpeciesStats,
+    abilities_id    SMALLINT        NOT NULL        REFERENCES SpeciesAbility,
+    exp_stat_id     SMALLINT        NOT NULL        REFERENCES SpeciesExpStats,
+    breeding_id     SMALLINT        DEFAULT NULL    REFERENCES PokeBreeding,
+    type_1          VARCHAR(16)     NOT NULL        REFERENCES Type,
+    type_2          VARCHAR(16)     DEFAULT NULL    REFERENCES Type,
     capture_rate    SMALLINT        NOT NULL,
-    PRIMARY KEY(nat_id, reg_form, gnd_form, spc_form, btl_form),
-    FOREIGN KEY(reg_form)       REFERENCES RegionalForm(moniker),
-    FOREIGN KEY(btl_form)       REFERENCES BattleForm(moniker),
-    FOREIGN KEY(base_stat_id)   REFERENCES SpeciesStats(id),
-    FOREIGN KEY(abilities_id)      REFERENCES SpeciesAbility(id),
-    FOREIGN KEY(exp_stat_id)    REFERENCES SpeciesExpStats(id),
-    FOREIGN KEY(breeding_id)    REFERENCES PokeBreeding(id),
-    FOREIGN KEY(type_1)         REFERENCES Type(name),
-    FOREIGN KEY(type_2)         REFERENCES Type(name)
+    PRIMARY KEY(nat_id, reg_form, gnd_form, spc_form, btl_form)
 );
 COMMENT ON TABLE PokemonSpecies IS 'Contains all species information';
 COMMENT ON COLUMN PokemonSpecies.reg_form IS 'NULL for no regional form';
@@ -100,14 +79,14 @@ COMMENT ON COLUMN PokemonSpecies.btl_form IS 'NULL for no battle form';
 COMMENT ON COLUMN PokemonSpecies.name IS 'changes in special form name included here';
 
 CREATE TABLE SpeciesID(
-    id          SMALLINT        NOT NULL,
+    id          SMALLINT        NOT NULL    PRIMARY KEY,
     nat_id      SMALLINT        NOT NULL,
     reg_form    VARCHAR(16)     DEFAULT NULL,
     gnd_form    gender          DEFAULT NULL,
     spc_form    BIT(5)          DEFAULT NULL,
     btl_form    VARCHAR(16)     DEFAULT NULL,
-    PRIMARY KEY(id),
-    FOREIGN KEY(nat_id, reg_form, gnd_form, spc_form, btl_form) REFERENCES PokemonSpecies(nat_id, reg_form, gnd_form, spc_form, btl_form)
+    FOREIGN KEY(nat_id, reg_form, gnd_form, spc_form, btl_form)
+        REFERENCES PokemonSpecies(nat_id, reg_form, gnd_form, spc_form, btl_form)
 );
 COMMENT ON TABLE SpeciesID IS 'convenience table for linking to PokemonSpecies';
 COMMENT ON COLUMN SpeciesID.reg_form IS 'NULL for no regional form';
@@ -116,13 +95,10 @@ COMMENT ON COLUMN SpeciesID.spc_form IS 'NULL for no special form';
 
 -- WARNING: not sure if this table will link to PokemonSpecies correctly without blt_form, need testing
 CREATE TABLE MoveLearnOrder(
-    poke_id     SMALLINT    NOT NULL,
-    move        VARCHAR(16) NOT NULL,
-    level       SMALLINT    NOT NULL,
-    PRIMARY KEY(poke_id, move, level),
-    CONSTRAINT CHK_level    CHECK(level <= 100),
-    FOREIGN KEY(poke_id)    REFERENCES SpeciesID(id),
-    FOREIGN KEY(move)       REFERENCES Move(name)
+    poke_id     SMALLINT    NOT NULL    REFERENCES SpeciesID,
+    move        VARCHAR(16) NOT NULL    REFERENCES Move,
+    level       SMALLINT    NOT NULL    CHECK(level <= 100),
+    PRIMARY KEY(poke_id, move, level)
 );
 COMMENT ON TABLE MoveLearnOrder IS 'Contains all moves learned by level up by a species';
 COMMENT ON COLUMN MoveLearnOrder.level IS '0 means learn on evolution';
