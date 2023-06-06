@@ -1,14 +1,3 @@
--- TODO: add lookup table for flavors
-CREATE TABLE Nature(
-    name            VARCHAR(16) NOT NULL,
-    stat_up         stat_name   DEFAULT NULL,
-    stat_down       stat_name   DEFAULT NULL,
-    fav_flavor      VARCHAR(16) NOT NULL,
-    hate_flavor     VARCHAR(16) NOT NULL,
-    PRIMARY KEY(name)
-);
-COMMENT ON TABLE Nature IS 'A nature is a characteristic of a Pokémon that affects the growth of its stats.';
-
 -- TODO: decide if these stats should also include ev/IV/nature changes
 -- TODO: might remove stats entirely and calculate them when needed
 CREATE TABLE PokeStats(
