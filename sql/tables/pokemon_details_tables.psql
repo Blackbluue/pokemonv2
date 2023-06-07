@@ -109,3 +109,12 @@ COMMENT ON COLUMN MoveLearnOrder.level IS '0 means learn on evolution';
 
 -- btl_form.moniker
     -- Mega, Primal, Gigantamax
+
+-- from Bulbapedia https://bulbapedia.bulbagarden.net/wiki/Stat#Base_stat_values
+    -- A Pokémon's base stat values will most often have the greatest influence
+    -- over their specific stats at any level. Disregarding individual values,
+    -- effort values, and Nature, a level 100 Pokémon's stats in Attack,
+    -- Defense, Speed, Special Attack, and Special Defense will be exactly 5
+    -- more than double its base stat values in each, while the HP stat will
+    -- be 110 plus double the base stat value (except in the case of Shedinja,
+    -- whose HP is always 1).
