@@ -52,14 +52,14 @@ COMMENT ON COLUMN MoveExtraData.copy IS 'Defines if a move can be copied by mirr
 COMMENT ON COLUMN MoveExtraData.spc_eff IS 'Defines the special effects of a move';
 
 CREATE TABLE Move(
-    name        VARCHAR(16)     NOT NULL    PRIMARY KEY     REFERENCES MoveExtraData,
     type        VARCHAR(16)     NOT NULL    REFERENCES Type,
     category    move_category   NOT NULL,
     pp          SMALLINT        NOT NULL    CHECK(pp <= 40),
     base_power  SMALLINT,
     accuracy    SMALLINT        DEFAULT 100 CHECK(accuracy <= 100),
-    text        TEXT            NOT NULL
-);
+    text        TEXT            NOT NULL,
+    PRIMARY KEY(name)
+) INHERITS(MoveExtraData);
 COMMENT ON TABLE Move IS 'Defines a move';
 
 -- recoil: damage taken by user based on damage dealt to opponent
