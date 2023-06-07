@@ -1,5 +1,5 @@
 -- TODO: decide if these stats should also include ev/IV/nature changes
--- TODO: might remove stats entirely and calculate them when needed
+-- TODO: calculate stats with generated columns
 CREATE TABLE PokeStats(
     id              SMALLINT    NOT NULL    PRIMARY KEY,
     nature          VARCHAR(16) NOT NULL    REFERENCES Nature,
@@ -46,7 +46,6 @@ COMMENT ON TABLE MoveList IS 'The current move list of a Pokémon.';
 
 -- TODO: add ribbon information
 CREATE TABLE Pokemon(
-    id              SMALLINT        NOT NULL        PRIMARY KEY     REFERENCES PokeStats,
     nat_id          SMALLINT        NOT NULL,
     reg_form        VARCHAR(16)     DEFAULT NULL    REFERENCES RegionalForm,
     gender          gender,
@@ -59,12 +58,11 @@ CREATE TABLE Pokemon(
     held_item       VARCHAR(16)     DEFAULT NULL,
     date_met        DATE            DEFAULT NULL,
     level           SMALLINT        NOT NULL    CHECK(level <= 100),
-    FOREIGN KEY(id)                                             REFERENCES HiddenStats(id),
-    FOREIGN KEY(id)                                             REFERENCES MoveList(id),
+    PRIMARY KEY(id),
     FOREIGN KEY(nat_id, reg_form, gender, spc_form, btl_form)   REFERENCES PokemonSpecies(nat_id, reg_form, gnd_form, spc_form, btl_form),
     FOREIGN KEY(ot_id, game)                                    REFERENCES Trainer(ot_id, game),
     FOREIGN KEY(held_item, game)                                REFERENCES Item(name, game)
-);
+) INHERITS(PokeStats, HiddenStats, MoveList);
 COMMENT ON TABLE Pokemon IS 'A single instance of a Pokémon.';
 COMMENT ON COLUMN Pokemon.reg_form IS 'NULL if this species has no regional forms.';
 COMMENT ON COLUMN Pokemon.spc_form IS 'NULL if this species has no special forms.';
