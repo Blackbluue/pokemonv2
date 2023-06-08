@@ -29,7 +29,7 @@ CREATE TABLE SpeciesStats(
     stats_spd       u_sm_int    NOT NULL,
     happiness       u_ty_int    NOT NULL    DEFAULT 50
 );
-COMMENT ON TABLE SpeciesStats IS 'Contains all stats and EV yields for a species';
+COMMENT ON TABLE SpeciesStats IS 'Contains all stats for a species';
 
 CREATE TABLE EggGroup(
     name            VARCHAR(16) NOT NULL    PRIMARY KEY

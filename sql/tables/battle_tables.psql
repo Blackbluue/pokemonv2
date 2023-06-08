@@ -31,25 +31,6 @@ CREATE TABLE MoveExtraData(
     spc_eff     TEXT            DEFAULT NULL
 );
 COMMENT ON TABLE MoveExtraData IS 'Defines the extra data for a move';
-COMMENT ON COLUMN MoveExtraData.priority IS
-    'Defines the priority of a move. Negative values are slower. Positive values are faster.';
-COMMENT ON COLUMN MoveExtraData.recoil IS 'Defines the recoil damage of a move';
-COMMENT ON COLUMN MoveExtraData.crash IS 'Defines the crash damage of a move';
-COMMENT ON COLUMN MoveExtraData.contact IS 'Defines if a move makes contact';
-COMMENT ON COLUMN MoveExtraData.sound IS 'Defines if a move is a sound move';
-COMMENT ON COLUMN MoveExtraData.punch IS 'Defines if a move is a punch move';
-COMMENT ON COLUMN MoveExtraData.biting IS 'Defines if a move is a biting move';
-COMMENT ON COLUMN MoveExtraData.snatch IS 'Defines if a move can be snatched';
-COMMENT ON COLUMN MoveExtraData.slicing IS 'Defines if a move is a slicing move';
-COMMENT ON COLUMN MoveExtraData.bullet IS 'Defines if a move is a bullet move';
-COMMENT ON COLUMN MoveExtraData.wind IS 'Defines if a move is a wind move';
-COMMENT ON COLUMN MoveExtraData.powder IS 'Defines if a move is a powder move';
-COMMENT ON COLUMN MoveExtraData.gravity IS 'Defines if a move is affected by gravity';
-COMMENT ON COLUMN MoveExtraData.defrost IS 'Defines if a move can defrost a frozen pokemon';
-COMMENT ON COLUMN MoveExtraData.reflect IS 'Defines if a move is reflected by magic coat';
-COMMENT ON COLUMN MoveExtraData.block IS 'Defines if a move is blocked by protect';
-COMMENT ON COLUMN MoveExtraData.copy IS 'Defines if a move can be copied by mirror move';
-COMMENT ON COLUMN MoveExtraData.spc_eff IS 'Defines the special effects of a move';
 
 CREATE TABLE Move(
     type        VARCHAR(16)     NOT NULL    REFERENCES Type,
@@ -60,7 +41,26 @@ CREATE TABLE Move(
     text        TEXT            NOT NULL,
     PRIMARY KEY(name)
 ) INHERITS(MoveExtraData);
-COMMENT ON TABLE Move IS 'Defines a move';
+COMMENT ON TABLE    Move            IS 'Defines a move';
+COMMENT ON COLUMN   Move.priority   IS
+    'Defines the priority of a move. Negative values are slower. Positive values are faster.';
+COMMENT ON COLUMN   Move.recoil     IS 'Defines the recoil damage of a move';
+COMMENT ON COLUMN   Move.crash      IS 'Defines the crash damage of a move';
+COMMENT ON COLUMN   Move.contact    IS 'Defines if a move makes contact';
+COMMENT ON COLUMN   Move.sound      IS 'Defines if a move is a sound move';
+COMMENT ON COLUMN   Move.punch      IS 'Defines if a move is a punch move';
+COMMENT ON COLUMN   Move.biting     IS 'Defines if a move is a biting move';
+COMMENT ON COLUMN   Move.snatch     IS 'Defines if a move can be snatched';
+COMMENT ON COLUMN   Move.slicing    IS 'Defines if a move is a slicing move';
+COMMENT ON COLUMN   Move.bullet     IS 'Defines if a move is a bullet move';
+COMMENT ON COLUMN   Move.wind       IS 'Defines if a move is a wind move';
+COMMENT ON COLUMN   Move.powder     IS 'Defines if a move is a powder move';
+COMMENT ON COLUMN   Move.gravity    IS 'Defines if a move is affected by gravity';
+COMMENT ON COLUMN   Move.defrost    IS 'Defines if a move can defrost a frozen pokemon';
+COMMENT ON COLUMN   Move.reflect    IS 'Defines if a move is reflected by magic coat';
+COMMENT ON COLUMN   Move.block      IS 'Defines if a move is blocked by protect';
+COMMENT ON COLUMN   Move.copy       IS 'Defines if a move can be copied by mirror move';
+COMMENT ON COLUMN   Move.spc_eff    IS 'Defines the special effects of a move';
 
 -- recoil: damage taken by user based on damage dealt to opponent
 
@@ -83,13 +83,14 @@ COMMENT ON TABLE Move IS 'Defines a move';
 -- spc_eff: special attributes on a move that are not standard
 
 -- effect values
--- Weather	Terrain	Status	HiddenStatus	StatChange	EntryHazard	RatioDamage	RatioHeal	Stun	Flinch	TypeChange
--- Sun	Misty	Burn	Attract	HP	Spikes	Percent of max health	Percent of max health	Self	Percent Chance	Type to change to
--- HarshSun	Electric	Paralysis	Confuse	Attack	Pointed stones
--- Rain	Grassy	Poison	Curse	Defense	Sticky web
--- HeavyRain	Psychic	Sleep	Heal	SpecialAttack	Poison spikes
--- Sandstorm	Clear	Freeze		SpecialDefense	Sharp steel
--- StrongWinds		Heal		Speed
--- Hail				Accuracy
--- Fog				Evasion
--- Clear				Clear
+-- Weather      Terrain     Status      HiddenStatus    StatChange      EntryHazard     RatioDamage             RatioHeal               Stun    Flinch              TypeChange
+
+-- Sun          Misty       Burn        Attract         HP              Spikes          Percent of max health   Percent of max health   Self    Percent Chance      Type to change to
+-- HarshSun     Electric    Paralysis   Confuse         Attack          Pointed stones
+-- Rain         Grassy      Poison      Curse           Defense         Sticky web
+-- HeavyRain    Psychic     Sleep       Heal            SpecialAttack   Poison spikes
+-- Sandstorm    Clear       Freeze                      SpecialDefense  Sharp steel
+-- StrongWinds              Heal                        Speed
+-- Hail                                                 Accuracy
+-- Fog                                                  Evasion
+-- Clear                                                Clear
