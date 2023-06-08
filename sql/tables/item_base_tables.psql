@@ -7,9 +7,9 @@ CREATE TABLE Item(
     name            VARCHAR(16) NOT NULL,
     game            VARCHAR(16) NOT NULL    REFERENCES Game,
     type            VARCHAR(16) NOT NULL    REFERENCES ItemType,
-    fling_dmg       SMALLINT    DEFAULT 30,
-    purchase_price  SMALLINT,
-    sell_price      SMALLINT,
+    fling_dmg       p_ty_int    DEFAULT 30,
+    purchase_price  u_sm_int,
+    sell_price      u_sm_int,
     description     TEXT        NOT NULL,
     details         TEXT,
     PRIMARY KEY(name, game)
@@ -23,9 +23,9 @@ COMMENT ON COLUMN Item.details IS 'Details on the item''s use/purpose.';
 
 CREATE TABLE Bag(
     item_name   VARCHAR(16) NOT NULL,
-    trainer_id  SMALLINT    NOT NULL,
+    trainer_id  u_sm_int    NOT NULL,
     game        VARCHAR(16) NOT NULL            REFERENCES Game,
-    count       SMALLINT    NOT NULL DEFAULT 1  CHECK(count <= 99),
+    count       p_max_99    NOT NULL DEFAULT 1,
     PRIMARY KEY(item_name, trainer_id),
     FOREIGN KEY(item_name, game)    REFERENCES Item(name, game),
     FOREIGN KEY(trainer_id, game)   REFERENCES Trainer(ot_id, game)

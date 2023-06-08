@@ -1,10 +1,10 @@
 CREATE TABLE Pokedex(
-    poke_id         SMALLINT        NOT NULL    PRIMARY KEY REFERENCES SpeciesID,
+    poke_id         u_sm_int        NOT NULL    PRIMARY KEY REFERENCES SpeciesID,
     classification  VARCHAR(16)     NOT NULL,
     height          DECIMAL(6,2)    NOT NULL,
     weight          DECIMAL(6,2)    NOT NULL,
     owned           pokedex_status  NOT NULL,
-    evo_id          SMALLINT                    REFERENCES Pokedex
+    evo_id          u_sm_int                    REFERENCES Pokedex
 );
 COMMENT ON TABLE Pokedex IS 'A table containing all the pokemon in the pokedex';
 COMMENT ON COLUMN Pokedex.height IS 'The height of the pokemon in meters';
@@ -12,9 +12,9 @@ COMMENT ON COLUMN Pokedex.weight IS 'The weight of the pokemon in kilograms';
 
 -- TODO: add language based descriptions, currently assumes EN
 CREATE TABLE RegionalPokedex(
-    poke_id     SMALLINT    NOT NULL    REFERENCES Pokedex,
+    poke_id     u_sm_int    NOT NULL    REFERENCES Pokedex,
     game        VARCHAR(16) NOT NULL    REFERENCES Game,
-    reg_id      SMALLINT    NOT NULL,
+    reg_id      u_sm_int    NOT NULL,
     description TEXT        NOT NULL,
     PRIMARY KEY(poke_id, game)
 );

@@ -10,7 +10,7 @@ INSERT INTO ItemType(name) VALUES('Pokeball');
 
 CREATE TABLE HPRecovery(
     type        VARCHAR(16)     NOT NULL    GENERATED ALWAYS AS ('HPRecovery') STORED REFERENCES ItemType,
-    hp_recv     SMALLINT        NOT NULL,
+    hp_recv     u_sm_int        NOT NULL,
     percentage  BOOLEAN         NOT NULL DEFAULT FALSE,
     PRIMARY KEY(name, game),
     FOREIGN KEY(game) REFERENCES Game
@@ -20,7 +20,7 @@ INSERT INTO ItemType(name) VALUES('HPRecovery');
 
 CREATE TABLE PPRecovery(
     type        VARCHAR(16)     NOT NULL    GENERATED ALWAYS AS ('PPRecovery') STORED REFERENCES ItemType,
-    pp_recv     SMALLINT        NOT NULL,
+    pp_recv     u_sm_int        NOT NULL,
     percentage  BOOLEAN         NOT NULL DEFAULT FALSE,
     PRIMARY KEY(name, game),
     FOREIGN KEY(game) REFERENCES Game

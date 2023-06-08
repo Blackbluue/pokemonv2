@@ -1,15 +1,34 @@
-DROP TYPE IF EXISTS pokedex_status;
-DROP TYPE IF EXISTS gender;
-DROP TYPE IF EXISTS stat_name;
-DROP TYPE IF EXISTS move_category;
-DROP TYPE IF EXISTS flavor;
+\i meta/drop_types.psql;
 
-DROP DOMAIN IF EXISTS iv_stat;
+CREATE TYPE pokedex_status  AS ENUM('unknown', 'seen', 'owned');
+CREATE TYPE gender          AS ENUM('M', 'F');
+CREATE TYPE stat_name       AS ENUM('hp', 'atk', 'def', 'sp_atk', 'sp_def', 'spd');
+CREATE TYPE move_category   AS ENUM('phys', 'spec', 'other');
+CREATE TYPE flavor          AS ENUM('spicy', 'dry', 'sweet', 'bitter', 'sour');
+COMMENT ON TYPE pokedex_status  IS 'If the pokemon is caught in the pokedex.';
+COMMENT ON TYPE flavor          IS 'Flavors for food items.';
 
-CREATE TYPE pokedex_status AS ENUM('unknown', 'seen', 'owned');
-CREATE TYPE gender AS ENUM('M', 'F');
-CREATE TYPE stat_name AS ENUM('hp', 'atk', 'def', 'sp_atk', 'sp_def', 'spd');
-CREATE TYPE move_category AS ENUM('phys', 'spec', 'other');
-CREATE TYPE flavor AS ENUM('spicy', 'dry', 'sweet', 'bitter', 'sour');
-
-CREATE DOMAIN iv_stat AS SMALLINT CHECK (value >= 0 AND value <= 31);
+CREATE DOMAIN u_sm_int  AS SMALLINT     CHECK (value >= 0);
+CREATE DOMAIN p_sm_int  AS SMALLINT     CHECK (value >= 1);
+CREATE DOMAIN u_ty_int  AS u_sm_int     CHECK (value <= 255);
+CREATE DOMAIN p_ty_int  AS u_ty_int     CHECK (value >= 1);
+CREATE DOMAIN u_max_4   AS u_sm_int     CHECK (value <= 3);
+CREATE DOMAIN u_max_31  AS u_sm_int     CHECK (value <= 31);
+CREATE DOMAIN p_max_99  AS p_sm_int     CHECK (value <= 99);
+CREATE DOMAIN p_max_100 AS p_sm_int     CHECK (value <= 100);
+CREATE DOMAIN u_max_100 AS u_sm_int     CHECK (value <= 100);
+CREATE DOMAIN iv_stat   AS u_sm_int     CHECK (value <= 31);
+CREATE DOMAIN ev_stat   AS u_sm_int     CHECK (value <= 255);
+CREATE DOMAIN ev_total  AS u_sm_int     CHECK (value <= 510);
+COMMENT ON DOMAIN u_sm_int  IS 'Unsigned small integer.';
+COMMENT ON DOMAIN p_sm_int  IS 'Positive small integer.';
+COMMENT ON DOMAIN u_ty_int  IS 'Unsigned tiny integer.';
+COMMENT ON DOMAIN p_ty_int  IS 'Positive tiny integer.';
+COMMENT ON DOMAIN u_max_4   IS 'Unsigned integer with a maximum of 4.';
+COMMENT ON DOMAIN u_max_31  IS 'Unsigned integer with a maximum of 31.';
+COMMENT ON DOMAIN p_max_99  IS 'Positive integer with a maximum of 99.';
+COMMENT ON DOMAIN p_max_100 IS 'Positive integer with a maximum of 100.';
+COMMENT ON DOMAIN u_max_100 IS 'Unsigned integer with a maximum of 100.';
+COMMENT ON DOMAIN iv_stat   IS 'Individual value for a stat.';
+COMMENT ON DOMAIN ev_stat   IS 'Effort value for a stat.';
+COMMENT ON DOMAIN ev_total  IS 'Total effort value.';

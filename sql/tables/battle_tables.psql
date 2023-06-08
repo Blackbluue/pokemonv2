@@ -6,9 +6,9 @@ COMMENT ON TABLE MoveTargeting IS 'Defines the targeting of a move';
 -- TODO: define condition/effect look up table
 CREATE TABLE MoveExtraData(
     name        VARCHAR(16)     NOT NULL            PRIMARY KEY,
-    effect      SMALLINT        DEFAULT NULL,
-    effect_rate SMALLINT        DEFAULT NULL        CHECK(effect_rate <= 100),
-    condition   SMALLINT        DEFAULT NULL,
+    effect      u_sm_int        DEFAULT NULL,
+    effect_rate u_max_100       DEFAULT NULL,
+    condition   u_ty_int        DEFAULT NULL,
     target      VARCHAR(32)     NOT NULL            REFERENCES MoveTargeting,
     crit_rate   DECIMAL(5, 2)   DEFAULT 4.17,
     priority    SMALLINT        NOT NULL DEFAULT 0  CHECK(priority >= -7 AND priority <= 5),
@@ -54,9 +54,9 @@ COMMENT ON COLUMN MoveExtraData.spc_eff IS 'Defines the special effects of a mov
 CREATE TABLE Move(
     type        VARCHAR(16)     NOT NULL    REFERENCES Type,
     category    move_category   NOT NULL,
-    pp          SMALLINT        NOT NULL    CHECK(pp <= 40),
-    base_power  SMALLINT,
-    accuracy    SMALLINT        DEFAULT 100 CHECK(accuracy <= 100),
+    pp          u_ty_int        NOT NULL    CHECK(pp <= 40),
+    base_power  u_ty_int,
+    accuracy    u_max_100       DEFAULT 100,
     text        TEXT            NOT NULL,
     PRIMARY KEY(name)
 ) INHERITS(MoveExtraData);
