@@ -1,4 +1,4 @@
-CREATE TABLE Game(
+CREATE TABLE IF NOT EXISTS Game(
     display_name    VARCHAR(16) NOT NULL,
     abbreviation    VARCHAR(5)  NOT NULL,
     generation      SMALLINT    NOT NULL,
@@ -6,13 +6,13 @@ CREATE TABLE Game(
 );
 COMMENT ON TABLE Game IS 'A game in the Pokémon series.';
 
-CREATE TABLE Type(
+CREATE TABLE IF NOT EXISTS Type(
     name    VARCHAR(16)   NOT NULL,
     PRIMARY KEY(name)
 );
 COMMENT ON TABLE Type IS 'A type for a Pokémon.';
 
-CREATE TABLE TypeMatchup(
+CREATE TABLE IF NOT EXISTS TypeMatchup(
     attacker    VARCHAR(16)     NOT NULL    REFERENCES Type,
     defender    VARCHAR(16)     NOT NULL    REFERENCES Type,
     multiplier  DECIMAL(2, 1)   NOT NULL    DEFAULT 1,
@@ -21,18 +21,18 @@ CREATE TABLE TypeMatchup(
 COMMENT ON TABLE TypeMatchup IS 'A multiplier for damage dealt by an attacker type to a defender type.';
 
 -- TODO: move this table into pokedex_tables.sql
-CREATE TABLE Ability(
+CREATE TABLE IF NOT EXISTS Ability(
     name            VARCHAR(16) NOT NULL    PRIMARY KEY,
     flavor_text     TEXT        NOT NULL
 );
 COMMENT ON TABLE Ability IS 'An ability for a Pokémon.';
 
-CREATE TABLE ExpGrowth(
+CREATE TABLE IF NOT EXISTS ExpGrowth(
     growth_rate VARCHAR(16)     NOT NULL    PRIMARY KEY
 );
 COMMENT ON TABLE ExpGrowth IS 'The experience growth rate for a Pokémon.';
 
-CREATE TABLE Nature(
+CREATE TABLE IF NOT EXISTS Nature(
     name            VARCHAR(16) NOT NULL    PRIMARY KEY,
     stat_up         stat_name   DEFAULT NULL,
     stat_down       stat_name   DEFAULT NULL,

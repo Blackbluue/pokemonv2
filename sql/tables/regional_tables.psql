@@ -1,11 +1,11 @@
-CREATE TABLE Region(
+CREATE TABLE IF NOT EXISTS Region(
     name    VARCHAR(16)     NOT NULL,
     game    VARCHAR(16)     NOT NULL    REFERENCES Game,
     PRIMARY KEY(name, game)
 );
 COMMENT ON TABLE Region IS 'A region is a geographical area in the Pokémon world.';
 
-CREATE TABLE Location(
+CREATE TABLE IF NOT EXISTS Location(
     name    VARCHAR(16)     NOT NULL,
     region  VARCHAR(16)     NOT NULL,
     game    VARCHAR(16)     NOT NULL,
@@ -14,12 +14,12 @@ CREATE TABLE Location(
 );
 COMMENT ON TABLE Location IS 'A location is a specific place in a region.';
 
-CREATE TABLE SpawnMethod(
+CREATE TABLE IF NOT EXISTS SpawnMethod(
     method  VARCHAR(64)     NOT NULL    PRIMARY KEY
 );
 COMMENT ON TABLE SpawnMethod IS 'A spawn method is a way in which a Pokémon can be found in a location.';
 
-CREATE TABLE SpawnLocation(
+CREATE TABLE IF NOT EXISTS SpawnLocation(
     loc_name        VARCHAR(16)     NOT NULL,
     region          VARCHAR(16)     NOT NULL,
     game            VARCHAR(16)     NOT NULL,

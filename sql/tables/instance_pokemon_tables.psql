@@ -1,6 +1,6 @@
 -- TODO: decide if these stats should also include ev/IV/nature changes
 -- TODO: calculate stats with generated columns
-CREATE TABLE PokeStats(
+CREATE TABLE IF NOT EXISTS PokeStats(
     id              u_sm_int    NOT NULL    PRIMARY KEY,
     nature          VARCHAR(16) NOT NULL    REFERENCES Nature,
     ability         VARCHAR(16) NOT NULL    REFERENCES Ability,
@@ -13,7 +13,7 @@ CREATE TABLE PokeStats(
 );
 COMMENT ON TABLE PokeStats IS 'The stats of a Pokémon.';
 
-CREATE TABLE HiddenStats(
+CREATE TABLE IF NOT EXISTS HiddenStats(
     id          u_sm_int    NOT NULL    PRIMARY KEY,
     happiness   u_ty_int    NOT NULL,
     ev_hp       u_ty_int    NOT NULL    DEFAULT 0,
@@ -31,7 +31,7 @@ CREATE TABLE HiddenStats(
 );
 COMMENT ON TABLE HiddenStats IS 'The hidden stats of a Pokémon.';
 
-CREATE TABLE MoveList(
+CREATE TABLE IF NOT EXISTS MoveList(
     id              u_sm_int    NOT NULL        PRIMARY KEY,
     move_1          VARCHAR(16) NOT NULL        REFERENCES Move,
     move_1_pp_up    u_max_4     NOT NULL        DEFAULT 0,
@@ -45,7 +45,7 @@ CREATE TABLE MoveList(
 COMMENT ON TABLE MoveList IS 'The current move list of a Pokémon.';
 
 -- TODO: add ribbon information
-CREATE TABLE Pokemon(
+CREATE TABLE IF NOT EXISTS Pokemon(
     nat_id          u_sm_int        NOT NULL,
     reg_form        VARCHAR(16)     DEFAULT NULL    REFERENCES RegionalForm,
     gender          gender,

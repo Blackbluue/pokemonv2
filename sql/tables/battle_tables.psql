@@ -1,10 +1,10 @@
-CREATE TABLE MoveTargeting(
+CREATE TABLE IF NOT EXISTS MoveTargeting(
     name    VARCHAR(32) PRIMARY KEY
 );
 COMMENT ON TABLE MoveTargeting IS 'Defines the targeting of a move';
 
 -- TODO: define condition/effect look up table
-CREATE TABLE MoveExtraData(
+CREATE TABLE IF NOT EXISTS MoveExtraData(
     name        VARCHAR(16)     NOT NULL            PRIMARY KEY,
     effect      u_sm_int        DEFAULT NULL,
     effect_rate u_max_100       DEFAULT NULL,
@@ -32,7 +32,7 @@ CREATE TABLE MoveExtraData(
 );
 COMMENT ON TABLE MoveExtraData IS 'Defines the extra data for a move';
 
-CREATE TABLE Move(
+CREATE TABLE IF NOT EXISTS Move(
     type        VARCHAR(16)     NOT NULL    REFERENCES Type,
     category    move_category   NOT NULL,
     pp          u_ty_int        NOT NULL    CHECK(pp <= 40),

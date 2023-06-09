@@ -1,4 +1,4 @@
-CREATE TABLE Pokedex(
+CREATE TABLE IF NOT EXISTS Pokedex(
     poke_id         u_sm_int        NOT NULL    PRIMARY KEY REFERENCES SpeciesID,
     classification  VARCHAR(16)     NOT NULL,
     height          DECIMAL(6,2)    NOT NULL,
@@ -11,7 +11,7 @@ COMMENT ON COLUMN Pokedex.height IS 'The height of the pokemon in meters';
 COMMENT ON COLUMN Pokedex.weight IS 'The weight of the pokemon in kilograms';
 
 -- TODO: add language based descriptions, currently assumes EN
-CREATE TABLE RegionalPokedex(
+CREATE TABLE IF NOT EXISTS RegionalPokedex(
     poke_id     u_sm_int    NOT NULL    REFERENCES Pokedex,
     game        VARCHAR(16) NOT NULL    REFERENCES Game,
     reg_id      u_sm_int    NOT NULL,
