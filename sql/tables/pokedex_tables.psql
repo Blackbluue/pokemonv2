@@ -1,5 +1,5 @@
 CREATE TABLE IF NOT EXISTS Pokedex(
-    poke_id         u_sm_int        NOT NULL    PRIMARY KEY REFERENCES SpeciesID,
+    poke_id         u_sm_int        NOT NULL    PRIMARY KEY REFERENCES PokemonSpecies,
     classification  VARCHAR(16)     NOT NULL,
     height          DECIMAL(6,2)    NOT NULL,
     weight          DECIMAL(6,2)    NOT NULL,

@@ -23,7 +23,7 @@ CREATE TABLE IF NOT EXISTS SpawnLocation(
     loc_name        VARCHAR(16)     NOT NULL,
     region          VARCHAR(16)     NOT NULL,
     game            VARCHAR(16)     NOT NULL,
-    poke_id         u_sm_int        NOT NULL    REFERENCES SpeciesID,
+    poke_id         u_sm_int        NOT NULL    REFERENCES PokemonSpecies,
     min_level       p_max_100       NOT NULL,
     max_level       p_max_100       NOT NULL,
     spawn_rate      DECIMAL(5, 2)   NOT NULL,
