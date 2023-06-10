@@ -69,9 +69,9 @@ CREATE TABLE IF NOT EXISTS MoveLearnOrder(
 COMMENT ON TABLE MoveLearnOrder IS 'Contains all moves learned by level up by a species';
 COMMENT ON COLUMN MoveLearnOrder.level IS '0 means learn on evolution';
 
+-- TODO: add TM move table
 -- TODO: add egg move table
 -- TODO: add tutor move table
--- TODO: add TM move table
 
 -- btl_form.moniker
     -- Mega, Primal, Gigantamax

@@ -28,6 +28,15 @@ CREATE TABLE IF NOT EXISTS PPRecovery(
 COMMENT ON TABLE PPRecovery IS 'A type of item that can be used to restore a Pokemon''s PP.';
 INSERT INTO ItemType VALUES('PPRecovery') ON CONFLICT DO NOTHING;
 
+CREATE TABLE IF NOT EXISTS StatusHealer(
+    type        VARCHAR(16)     NOT NULL    GENERATED ALWAYS AS ('StatusHealer') STORED REFERENCES ItemType,
+    status      Status          NOT NULL,
+    PRIMARY KEY(name, game),
+    FOREIGN KEY(game) REFERENCES Game
+) INHERITS(Item);
+COMMENT ON TABLE StatusHealer IS 'A type of item that can be used to heal a Pokemon''s status condition.';
+INSERT INTO ItemType VALUES('StatusHealer') ON CONFLICT DO NOTHING;
+
 CREATE TABLE IF NOT EXISTS KeyItem(
     type        VARCHAR(16)     NOT NULL    GENERATED ALWAYS AS ('Key Item') STORED  REFERENCES ItemType,
     PRIMARY KEY(name, game),
