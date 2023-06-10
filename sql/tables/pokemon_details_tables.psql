@@ -1,5 +1,5 @@
 CREATE TABLE IF NOT EXISTS SpeciesExpStats(
-    id              u_sm_int    NOT NULL    PRIMARY KEY,
+    nat_id          u_sm_int    NOT NULL    PRIMARY KEY,
     ev_hp           u_max_4     NOT NULL,
     ev_atk          u_max_4     NOT NULL,
     ev_def          u_max_4     NOT NULL,
@@ -12,7 +12,7 @@ CREATE TABLE IF NOT EXISTS SpeciesExpStats(
 COMMENT ON TABLE SpeciesExpStats IS 'Contains all EV yields and exp info for a species';
 
 CREATE TABLE IF NOT EXISTS SpeciesAbility(
-    id              u_sm_int    NOT NULL        PRIMARY KEY,
+    nat_id          u_sm_int    NOT NULL        PRIMARY KEY,
     ability_1       VARCHAR(16) NOT NULL        REFERENCES Ability,
     ability_2       VARCHAR(16) DEFAULT NULL    REFERENCES Ability,
     ability_hidden  VARCHAR(16) DEFAULT NULL    REFERENCES Ability
@@ -20,7 +20,7 @@ CREATE TABLE IF NOT EXISTS SpeciesAbility(
 COMMENT ON TABLE SpeciesAbility IS 'Contains possible abilities a species can have';
 
 CREATE TABLE IF NOT EXISTS SpeciesStats(
-    id              u_sm_int    NOT NULL    PRIMARY KEY,
+    nat_id          u_sm_int    NOT NULL    PRIMARY KEY,
     stats_hp        u_sm_int    NOT NULL,
     stats_atk       u_sm_int    NOT NULL,
     stats_def       u_sm_int    NOT NULL,
@@ -37,7 +37,7 @@ CREATE TABLE IF NOT EXISTS EggGroup(
 COMMENT ON TABLE EggGroup IS 'Contains all egg groups';
 
 CREATE TABLE IF NOT EXISTS PokeBreeding(
-    id              u_sm_int    NOT NULL    PRIMARY KEY,
+    nat_id          u_sm_int    NOT NULL    PRIMARY KEY,
     egg_cycles      u_ty_int    NOT NULL,
     egg_group_1     VARCHAR(16) NOT NULL    REFERENCES EggGroup,
     egg_group_2     VARCHAR(16)             REFERENCES EggGroup
@@ -61,15 +61,11 @@ CREATE TABLE IF NOT EXISTS PokemonSpecies(
     spc_form        u_max_31        DEFAULT NULL,
     btl_form        VARCHAR(16)     DEFAULT NULL    REFERENCES BattleForm,
     name            VARCHAR(16)     NOT NULL,
-    base_stat_id    u_sm_int        NOT NULL        REFERENCES SpeciesStats,
-    abilities_id    u_sm_int        NOT NULL        REFERENCES SpeciesAbility,
-    exp_stat_id     u_sm_int        NOT NULL        REFERENCES SpeciesExpStats,
-    breeding_id     u_sm_int        DEFAULT NULL    REFERENCES PokeBreeding,
     type_1          VARCHAR(16)     NOT NULL        REFERENCES Type,
     type_2          VARCHAR(16)     DEFAULT NULL    REFERENCES Type,
     capture_rate    u_ty_int        NOT NULL,
     PRIMARY KEY(nat_id, reg_form, gnd_form, spc_form, btl_form)
-);
+) INHERITS (SpeciesExpStats, SpeciesAbility, SpeciesStats, PokeBreeding);
 COMMENT ON TABLE PokemonSpecies IS 'Contains all species information';
 COMMENT ON COLUMN PokemonSpecies.reg_form IS 'NULL for no regional form';
 COMMENT ON COLUMN PokemonSpecies.gnd_form IS 'NULL for no change in gender form';
