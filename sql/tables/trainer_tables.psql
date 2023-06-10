@@ -1,8 +1,3 @@
-CREATE TABLE IF NOT EXISTS TrainerClass(
-    name VARCHAR(16) NOT NULL   PRIMARY KEY
-);
-COMMENT ON TABLE TrainerClass IS 'The class of a trainer, e.g. "Youngster" or "Ace Trainer".';
-
 CREATE TABLE IF NOT EXISTS Trainer(
     name    VARCHAR(16) NOT NULL,
     ot_id   SMALLINT    NOT NULL,

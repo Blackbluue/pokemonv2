@@ -40,3 +40,38 @@ CREATE TABLE IF NOT EXISTS Nature(
     hate_flavor     flavor      NOT NULL
 );
 COMMENT ON TABLE Nature IS 'A nature is a characteristic of a Pokémon that affects the growth of its stats.';
+
+CREATE TABLE IF NOT EXISTS EggGroup(
+    name            VARCHAR(16) NOT NULL    PRIMARY KEY
+);
+COMMENT ON TABLE EggGroup IS 'Contains all egg groups';
+
+CREATE TABLE IF NOT EXISTS RegionalForm(
+    moniker     VARCHAR(16)     NOT NULL    PRIMARY KEY
+);
+COMMENT ON TABLE RegionalForm IS 'Contains all regional forms for a species';
+
+CREATE TABLE IF NOT EXISTS BattleForm(
+    moniker     VARCHAR(16)     NOT NULL    PRIMARY KEY
+);
+COMMENT ON TABLE BattleForm IS 'Contains all battle forms for a species';
+
+CREATE TABLE IF NOT EXISTS SpawnMethod(
+    method  VARCHAR(64)     NOT NULL    PRIMARY KEY
+);
+COMMENT ON TABLE SpawnMethod IS 'A spawn method is a way in which a Pokémon can be found in a location.';
+
+CREATE TABLE IF NOT EXISTS ItemType(
+    name    VARCHAR(16) PRIMARY KEY
+);
+COMMENT ON TABLE ItemType IS 'Types of items, e.g. "Poke Ball", "Potion", "TM", etc.';
+
+CREATE TABLE IF NOT EXISTS TrainerClass(
+    name VARCHAR(16) NOT NULL   PRIMARY KEY
+);
+COMMENT ON TABLE TrainerClass IS 'The class of a trainer, e.g. "Youngster" or "Ace Trainer".';
+
+CREATE TABLE IF NOT EXISTS MoveTargeting(
+    name    VARCHAR(32) PRIMARY KEY
+);
+COMMENT ON TABLE MoveTargeting IS 'Defines the targeting of a move';

@@ -1,8 +1,3 @@
-CREATE TABLE IF NOT EXISTS MoveTargeting(
-    name    VARCHAR(32) PRIMARY KEY
-);
-COMMENT ON TABLE MoveTargeting IS 'Defines the targeting of a move';
-
 -- TODO: define condition/effect look up table
 CREATE TABLE IF NOT EXISTS MoveExtraData(
     name        VARCHAR(16)     NOT NULL            PRIMARY KEY,

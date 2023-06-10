@@ -31,28 +31,13 @@ CREATE TABLE IF NOT EXISTS SpeciesStats(
 );
 COMMENT ON TABLE SpeciesStats IS 'Contains all stats for a species';
 
-CREATE TABLE IF NOT EXISTS EggGroup(
-    name            VARCHAR(16) NOT NULL    PRIMARY KEY
-);
-COMMENT ON TABLE EggGroup IS 'Contains all egg groups';
-
 CREATE TABLE IF NOT EXISTS PokeBreeding(
-    nat_id          u_sm_int    NOT NULL    PRIMARY KEY,
+    nat_id          u_sm_int    NOT NULL        PRIMARY KEY,
     egg_cycles      u_ty_int    NOT NULL,
-    egg_group_1     VARCHAR(16) NOT NULL    REFERENCES EggGroup,
-    egg_group_2     VARCHAR(16)             REFERENCES EggGroup
+    egg_group_1     VARCHAR(16) NOT NULL        REFERENCES EggGroup,
+    egg_group_2     VARCHAR(16) DEFAULT NULL    REFERENCES EggGroup
 );
 COMMENT ON TABLE PokeBreeding IS 'Contains all breeding information for a species';
-
-CREATE TABLE IF NOT EXISTS RegionalForm(
-    moniker     VARCHAR(16)     NOT NULL    PRIMARY KEY
-);
-COMMENT ON TABLE RegionalForm IS 'Contains all regional forms for a species';
-
-CREATE TABLE IF NOT EXISTS BattleForm(
-    moniker     VARCHAR(16)     NOT NULL    PRIMARY KEY
-);
-COMMENT ON TABLE BattleForm IS 'Contains all battle forms for a species';
 
 CREATE TABLE IF NOT EXISTS PokemonSpecies(
     id              u_sm_int        NOT NULL    PRIMARY KEY,

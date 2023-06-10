@@ -1,8 +1,7 @@
 \i tables/drop_tables.psql;
 \i meta/user_types.psql;
 
--- TODO: rename static_tables.sql to be more specific for its purpose
-\i tables/static_tables.psql;
+\i tables/system_tables.psql;
 \i tables/battle_tables.psql;
 \i tables/trainer_tables.psql;
 \i tables/pokemon_details_tables.psql;

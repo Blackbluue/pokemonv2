@@ -14,11 +14,6 @@ CREATE TABLE IF NOT EXISTS Location(
 );
 COMMENT ON TABLE Location IS 'A location is a specific place in a region.';
 
-CREATE TABLE IF NOT EXISTS SpawnMethod(
-    method  VARCHAR(64)     NOT NULL    PRIMARY KEY
-);
-COMMENT ON TABLE SpawnMethod IS 'A spawn method is a way in which a Pokémon can be found in a location.';
-
 CREATE TABLE IF NOT EXISTS SpawnLocation(
     loc_name        VARCHAR(16)     NOT NULL,
     region          VARCHAR(16)     NOT NULL,
