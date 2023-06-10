@@ -60,7 +60,6 @@ COMMENT ON COLUMN PokemonSpecies.btl_form IS 'NULL for no battle form';
 COMMENT ON COLUMN PokemonSpecies.name IS 'changes in special form name included here';
 
 
--- WARNING: not sure if this table will link to PokemonSpecies correctly without blt_form, need testing
 CREATE TABLE IF NOT EXISTS MoveLearnOrder(
     poke_id     u_sm_int    NOT NULL    REFERENCES PokemonSpecies,
     move        VARCHAR(16) NOT NULL    REFERENCES Move,
