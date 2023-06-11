@@ -80,8 +80,6 @@ CREATE TABLE IF NOT EXISTS MoveLearnMachine(
 COMMENT ON TABLE MoveLearnMachine IS 'Contains all moves learned by Move Machine by a species';
 
 -- TODO: add egg move table
--- TODO: add tutor move table
-
 -- btl_form.moniker
     -- Mega, Primal, Gigantamax
 
