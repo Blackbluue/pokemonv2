@@ -69,7 +69,16 @@ CREATE TABLE IF NOT EXISTS MoveLearnOrder(
 COMMENT ON TABLE MoveLearnOrder IS 'Contains all moves learned by level up by a species';
 COMMENT ON COLUMN MoveLearnOrder.level IS '0 means learn on evolution';
 
--- TODO: add TM move table
+CREATE TABLE IF NOT EXISTS MoveLearnMachine(
+    poke_id     u_sm_int    NOT NULL    REFERENCES PokemonSpecies,
+    move        VARCHAR(16) NOT NULL    REFERENCES Move,
+    machine     VARCHAR(16) NOT NULL,
+    game        VARCHAR(16) NOT NULL    REFERENCES Game,
+    PRIMARY KEY(poke_id, move, game),
+    FOREIGN KEY(machine, game) REFERENCES MoveMachine(name, game)
+);
+COMMENT ON TABLE MoveLearnMachine IS 'Contains all moves learned by Move Machine by a species';
+
 -- TODO: add egg move table
 -- TODO: add tutor move table
 

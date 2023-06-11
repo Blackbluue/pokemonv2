@@ -37,6 +37,16 @@ CREATE TABLE IF NOT EXISTS StatusHealer(
 COMMENT ON TABLE StatusHealer IS 'A type of item that can be used to heal a Pokemon''s status condition.';
 INSERT INTO ItemType VALUES('StatusHealer') ON CONFLICT DO NOTHING;
 
+CREATE TABLE IF NOT EXISTS MoveMachine(
+    type        VARCHAR(16)     NOT NULL    GENERATED ALWAYS AS ('MoveMachine') STORED REFERENCES ItemType,
+    move        VARCHAR(16)     NOT NULL    REFERENCES Move,
+    expendable  BOOLEAN         NOT NULL    DEFAULT TRUE,
+    PRIMARY KEY(name, game),
+    FOREIGN KEY(game) REFERENCES Game
+) INHERITS(Item);
+COMMENT ON TABLE MoveMachine IS 'A type of item that can be used to teach a Pokemon a move.';
+INSERT INTO ItemType VALUES('MoveMachine') ON CONFLICT DO NOTHING;
+
 CREATE TABLE IF NOT EXISTS KeyItem(
     type        VARCHAR(16)     NOT NULL    GENERATED ALWAYS AS ('Key Item') STORED  REFERENCES ItemType,
     PRIMARY KEY(name, game),

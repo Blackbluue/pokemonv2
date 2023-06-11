@@ -1,10 +1,11 @@
+-- Environment Setup
 \i tables/drop_tables.psql;
 \i meta/user_types.psql;
 
 \i tables/system_tables.psql;
 \i tables/battle_tables.psql;
-\i tables/trainer_tables.psql;
 \i tables/pokemon_details_tables.psql;
+\i tables/trainer_tables.psql;
 \i tables/regional_tables.psql;
 \i tables/item_base_tables.psql;
 \i tables/item_types_tables.psql;
