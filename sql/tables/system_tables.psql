@@ -1,0 +1,77 @@
+CREATE TABLE IF NOT EXISTS Game(
+    display_name    VARCHAR(16) NOT NULL,
+    abbreviation    VARCHAR(5)  NOT NULL,
+    generation      SMALLINT    NOT NULL,
+    PRIMARY KEY(display_name)
+);
+COMMENT ON TABLE Game IS 'A game in the Pokémon series.';
+
+CREATE TABLE IF NOT EXISTS Type(
+    name    VARCHAR(16)   NOT NULL,
+    PRIMARY KEY(name)
+);
+COMMENT ON TABLE Type IS 'A type for a Pokémon.';
+
+CREATE TABLE IF NOT EXISTS TypeMatchup(
+    attacker    VARCHAR(16)     NOT NULL    REFERENCES Type,
+    defender    VARCHAR(16)     NOT NULL    REFERENCES Type,
+    multiplier  DECIMAL(2, 1)   NOT NULL    DEFAULT 1,
+    PRIMARY KEY(attacker, defender)
+);
+COMMENT ON TABLE TypeMatchup IS 'A multiplier for damage dealt by an attacker type to a defender type.';
+
+-- TODO: move this table into pokedex_tables.sql
+CREATE TABLE IF NOT EXISTS Ability(
+    name            VARCHAR(16) NOT NULL    PRIMARY KEY,
+    flavor_text     TEXT        NOT NULL
+);
+COMMENT ON TABLE Ability IS 'An ability for a Pokémon.';
+
+CREATE TABLE IF NOT EXISTS ExpGrowth(
+    growth_rate VARCHAR(16)     NOT NULL    PRIMARY KEY
+);
+COMMENT ON TABLE ExpGrowth IS 'The experience growth rate for a Pokémon.';
+
+CREATE TABLE IF NOT EXISTS Nature(
+    name            VARCHAR(16) NOT NULL    PRIMARY KEY,
+    stat_up         stat_name   DEFAULT NULL,
+    stat_down       stat_name   DEFAULT NULL,
+    fav_flavor      flavor      NOT NULL,
+    hate_flavor     flavor      NOT NULL
+);
+COMMENT ON TABLE Nature IS 'A nature is a characteristic of a Pokémon that affects the growth of its stats.';
+
+CREATE TABLE IF NOT EXISTS EggGroup(
+    name            VARCHAR(16) NOT NULL    PRIMARY KEY
+);
+COMMENT ON TABLE EggGroup IS 'Contains all egg groups';
+
+CREATE TABLE IF NOT EXISTS RegionalForm(
+    moniker     VARCHAR(16)     NOT NULL    PRIMARY KEY
+);
+COMMENT ON TABLE RegionalForm IS 'Contains all regional forms for a species';
+
+CREATE TABLE IF NOT EXISTS BattleForm(
+    moniker     VARCHAR(16)     NOT NULL    PRIMARY KEY
+);
+COMMENT ON TABLE BattleForm IS 'Contains all battle forms for a species';
+
+CREATE TABLE IF NOT EXISTS SpawnMethod(
+    method  VARCHAR(64)     NOT NULL    PRIMARY KEY
+);
+COMMENT ON TABLE SpawnMethod IS 'A spawn method is a way in which a Pokémon can be found in a location.';
+
+CREATE TABLE IF NOT EXISTS ItemType(
+    name    VARCHAR(16) PRIMARY KEY
+);
+COMMENT ON TABLE ItemType IS 'Types of items, e.g. "Poke Ball", "Potion", "TM", etc.';
+
+CREATE TABLE IF NOT EXISTS TrainerClass(
+    name VARCHAR(16) NOT NULL   PRIMARY KEY
+);
+COMMENT ON TABLE TrainerClass IS 'The class of a trainer, e.g. "Youngster" or "Ace Trainer".';
+
+CREATE TABLE IF NOT EXISTS MoveTargeting(
+    name    VARCHAR(32) PRIMARY KEY
+);
+COMMENT ON TABLE MoveTargeting IS 'Defines the targeting of a move';

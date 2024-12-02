@@ -1,0 +1,16 @@
+CREATE TABLE IF NOT EXISTS Trainer(
+    name    VARCHAR(16) NOT NULL,
+    ot_id   SMALLINT    NOT NULL,
+    game    VARCHAR(16) NOT NULL    REFERENCES Game,
+    class   VARCHAR(16) NOT NULL    REFERENCES TrainerClass,
+    PRIMARY KEY(ot_id, game)
+);
+COMMENT ON TABLE Trainer IS 'A trainer in the game.';
+
+-- TODO: add NPC table
+CREATE TABLE IF NOT EXISTS MoveTutor(
+    poke_id     u_sm_int    NOT NULL    REFERENCES PokemonSpecies,
+    move        VARCHAR(16) NOT NULL    REFERENCES Move,
+    npc         VARCHAR(16) NOT NULL,
+    PRIMARY KEY(poke_id, move)
+);

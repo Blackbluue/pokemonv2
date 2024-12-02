@@ -1,0 +1,30 @@
+CREATE TABLE IF NOT EXISTS Region(
+    name    VARCHAR(16)     NOT NULL,
+    game    VARCHAR(16)     NOT NULL    REFERENCES Game,
+    PRIMARY KEY(name, game)
+);
+COMMENT ON TABLE Region IS 'A region is a geographical area in the Pokémon world.';
+
+CREATE TABLE IF NOT EXISTS Location(
+    name    VARCHAR(16)     NOT NULL,
+    region  VARCHAR(16)     NOT NULL,
+    game    VARCHAR(16)     NOT NULL,
+    PRIMARY KEY(name, region, game),
+    FOREIGN KEY(region, game) REFERENCES Region
+);
+COMMENT ON TABLE Location IS 'A location is a specific place in a region.';
+
+CREATE TABLE IF NOT EXISTS SpawnLocation(
+    loc_name        VARCHAR(16)     NOT NULL,
+    region          VARCHAR(16)     NOT NULL,
+    game            VARCHAR(16)     NOT NULL,
+    poke_id         u_sm_int        NOT NULL    REFERENCES PokemonSpecies,
+    min_level       p_max_100       NOT NULL,
+    max_level       p_max_100       NOT NULL,
+    spawn_rate      DECIMAL(5, 2)   NOT NULL,
+    spawn_method    VARCHAR(64)     NOT NULL    REFERENCES SpawnMethod,
+    PRIMARY KEY(loc_name, region, game, poke_id),
+    CONSTRAINT CHK_level                CHECK(min_level <= max_level),
+    FOREIGN KEY(loc_name, region, game) REFERENCES Location(name, region, game)
+);
+COMMENT ON TABLE SpawnLocation IS 'Maps Pokémon to their spawn locations.';

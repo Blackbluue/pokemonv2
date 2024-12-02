@@ -1,0 +1,93 @@
+CREATE TABLE IF NOT EXISTS SpeciesExpStats(
+    nat_id          u_sm_int    NOT NULL    PRIMARY KEY,
+    ev_hp           u_max_4     NOT NULL,
+    ev_atk          u_max_4     NOT NULL,
+    ev_def          u_max_4     NOT NULL,
+    ev_sp_atk       u_max_4     NOT NULL,
+    ev_sp_def       u_max_4     NOT NULL,
+    ev_spd          u_max_4     NOT NULL,
+    exp_yield       u_sm_int    NOT NULL,
+    exp_growth_rate VARCHAR(16) NOT NULL    REFERENCES ExpGrowth
+);
+COMMENT ON TABLE SpeciesExpStats IS 'Contains all EV yields and exp info for a species';
+
+CREATE TABLE IF NOT EXISTS SpeciesAbility(
+    nat_id          u_sm_int    NOT NULL        PRIMARY KEY,
+    ability_1       VARCHAR(16) NOT NULL        REFERENCES Ability,
+    ability_2       VARCHAR(16) DEFAULT NULL    REFERENCES Ability,
+    ability_hidden  VARCHAR(16) DEFAULT NULL    REFERENCES Ability
+);
+COMMENT ON TABLE SpeciesAbility IS 'Contains possible abilities a species can have';
+
+CREATE TABLE IF NOT EXISTS SpeciesStats(
+    nat_id          u_sm_int    NOT NULL    PRIMARY KEY,
+    stats_hp        u_sm_int    NOT NULL,
+    stats_atk       u_sm_int    NOT NULL,
+    stats_def       u_sm_int    NOT NULL,
+    stats_sp_atk    u_sm_int    NOT NULL,
+    stats_sp_def    u_sm_int    NOT NULL,
+    stats_spd       u_sm_int    NOT NULL,
+    happiness       u_ty_int    NOT NULL    DEFAULT 50
+);
+COMMENT ON TABLE SpeciesStats IS 'Contains all stats for a species';
+
+CREATE TABLE IF NOT EXISTS PokeBreeding(
+    nat_id          u_sm_int    NOT NULL        PRIMARY KEY,
+    egg_cycles      u_ty_int    NOT NULL,
+    egg_group_1     VARCHAR(16) NOT NULL        REFERENCES EggGroup,
+    egg_group_2     VARCHAR(16) DEFAULT NULL    REFERENCES EggGroup
+);
+COMMENT ON TABLE PokeBreeding IS 'Contains all breeding information for a species';
+
+CREATE TABLE IF NOT EXISTS PokemonSpecies(
+    id              u_sm_int        NOT NULL    PRIMARY KEY,
+    nat_id          u_sm_int        NOT NULL,
+    reg_form        VARCHAR(16)     DEFAULT NULL    REFERENCES RegionalForm,
+    gnd_form        gender          DEFAULT NULL,
+    spc_form        u_max_31        DEFAULT NULL,
+    btl_form        VARCHAR(16)     DEFAULT NULL    REFERENCES BattleForm,
+    name            VARCHAR(16)     NOT NULL,
+    type_1          VARCHAR(16)     NOT NULL        REFERENCES Type,
+    type_2          VARCHAR(16)     DEFAULT NULL    REFERENCES Type,
+    capture_rate    u_ty_int        NOT NULL,
+    UNIQUE(nat_id, reg_form, gnd_form, spc_form, btl_form)
+) INHERITS (SpeciesExpStats, SpeciesAbility, SpeciesStats, PokeBreeding);
+COMMENT ON TABLE PokemonSpecies IS 'Contains all species information';
+COMMENT ON COLUMN PokemonSpecies.reg_form IS 'NULL for no regional form';
+COMMENT ON COLUMN PokemonSpecies.gnd_form IS 'NULL for no change in gender form';
+COMMENT ON COLUMN PokemonSpecies.spc_form IS 'NULL for no special form';
+COMMENT ON COLUMN PokemonSpecies.btl_form IS 'NULL for no battle form';
+COMMENT ON COLUMN PokemonSpecies.name IS 'changes in special form name included here';
+
+
+CREATE TABLE IF NOT EXISTS MoveLearnOrder(
+    poke_id     u_sm_int    NOT NULL    REFERENCES PokemonSpecies,
+    move        VARCHAR(16) NOT NULL    REFERENCES Move,
+    level       p_max_100   NOT NULL,
+    PRIMARY KEY(poke_id, move, level)
+);
+COMMENT ON TABLE MoveLearnOrder IS 'Contains all moves learned by level up by a species';
+COMMENT ON COLUMN MoveLearnOrder.level IS '0 means learn on evolution';
+
+CREATE TABLE IF NOT EXISTS MoveLearnMachine(
+    poke_id     u_sm_int    NOT NULL    REFERENCES PokemonSpecies,
+    move        VARCHAR(16) NOT NULL    REFERENCES Move,
+    machine     VARCHAR(16) NOT NULL,
+    game        VARCHAR(16) NOT NULL    REFERENCES Game,
+    PRIMARY KEY(poke_id, move, game),
+    FOREIGN KEY(machine, game) REFERENCES MoveMachine(name, game)
+);
+COMMENT ON TABLE MoveLearnMachine IS 'Contains all moves learned by Move Machine by a species';
+
+-- TODO: add egg move table
+-- btl_form.moniker
+    -- Mega, Primal, Gigantamax
+
+-- from Bulbapedia https://bulbapedia.bulbagarden.net/wiki/Stat#Base_stat_values
+    -- A Pokémon's base stat values will most often have the greatest influence
+    -- over their specific stats at any level. Disregarding individual values,
+    -- effort values, and Nature, a level 100 Pokémon's stats in Attack,
+    -- Defense, Speed, Special Attack, and Special Defense will be exactly 5
+    -- more than double its base stat values in each, while the HP stat will
+    -- be 110 plus double the base stat value (except in the case of Shedinja,
+    -- whose HP is always 1).

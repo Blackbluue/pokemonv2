@@ -1,0 +1,122 @@
+-- TODO: add details for status conditions
+CREATE TABLE IF NOT EXISTS Status(
+    name        VARCHAR(16)     NOT NULL    PRIMARY KEY,
+    details     TEXT            NOT NULL,
+    min_turns   p_ty_int,
+    max_turns   p_ty_int,
+    CHECK(min_turns <= max_turns)
+);
+COMMENT ON TABLE Status             IS 'Defines a generic status condition';
+COMMENT ON COLUMN Status.name       IS 'The name of the status condition';
+COMMENT ON COLUMN Status.details    IS 'Details of the status condition';
+COMMENT ON COLUMN Status.min_turns  IS 'The minimum number of turns the status condition lasts';
+COMMENT ON COLUMN Status.max_turns  IS 'The maximum number of turns the status condition lasts';
+
+CREATE TABLE IF NOT EXISTS NonVolatileStatus(
+    abbreviation    VARCHAR(3)  NOT NULL,
+    PRIMARY KEY(name)
+) INHERITS(Status);
+COMMENT ON TABLE NonVolatileStatus IS 'Defines a permanent status condition';
+COMMENT ON COLUMN NonVolatileStatus.abbreviation IS 'The abbreviation of the condition''s name';
+
+CREATE TABLE IF NOT EXISTS VolatileStatus(
+    PRIMARY KEY(name)
+) INHERITS(Status);
+COMMENT ON TABLE VolatileStatus IS 'Defines a temporary status condition';
+
+CREATE TABLE IF NOT EXISTS BattleCondition(
+    PRIMARY KEY(name)
+) INHERITS(Status);
+COMMENT ON TABLE BattleCondition IS 'Defines a positive battle condition';
+
+-- TODO: define condition/effect look up table
+CREATE TABLE IF NOT EXISTS MoveExtraData(
+    name        VARCHAR(16)     NOT NULL            PRIMARY KEY,
+    effect      u_sm_int        DEFAULT NULL,
+    effect_rate u_max_100       DEFAULT NULL,
+    condition   u_ty_int        DEFAULT NULL,
+    target      VARCHAR(32)     NOT NULL            REFERENCES MoveTargeting,
+    crit_rate   DECIMAL(5, 2)   DEFAULT 4.17,
+    priority    SMALLINT        NOT NULL DEFAULT 0  CHECK(priority >= -7 AND priority <= 5),
+    recoil      DECIMAL(3, 2)   DEFAULT NULL,
+    crash       DECIMAL(3, 2)   DEFAULT NULL,
+    contact     BOOLEAN         NOT NULL DEFAULT FALSE,
+    sound       BOOLEAN         NOT NULL DEFAULT FALSE,
+    punch       BOOLEAN         NOT NULL DEFAULT FALSE,
+    biting      BOOLEAN         NOT NULL DEFAULT FALSE,
+    snatch      BOOLEAN         NOT NULL DEFAULT FALSE,
+    slicing     BOOLEAN         NOT NULL DEFAULT FALSE,
+    bullet      BOOLEAN         NOT NULL DEFAULT FALSE,
+    wind        BOOLEAN         NOT NULL DEFAULT FALSE,
+    powder      BOOLEAN         NOT NULL DEFAULT FALSE,
+    gravity     BOOLEAN         NOT NULL DEFAULT FALSE,
+    defrost     BOOLEAN         NOT NULL DEFAULT FALSE,
+    reflect     BOOLEAN         NOT NULL DEFAULT FALSE,
+    block       BOOLEAN         NOT NULL DEFAULT TRUE,
+    copy        BOOLEAN         NOT NULL DEFAULT TRUE,
+    spc_eff     TEXT            DEFAULT NULL
+);
+COMMENT ON TABLE MoveExtraData IS 'Defines the extra data for a move';
+
+CREATE TABLE IF NOT EXISTS Move(
+    type        VARCHAR(16)     NOT NULL    REFERENCES Type,
+    category    move_category   NOT NULL,
+    pp          u_ty_int        NOT NULL    CHECK(pp <= 40),
+    base_power  u_ty_int,
+    accuracy    u_max_100       DEFAULT 100,
+    text        TEXT            NOT NULL,
+    PRIMARY KEY(name)
+) INHERITS(MoveExtraData);
+COMMENT ON TABLE    Move            IS 'Defines a move';
+COMMENT ON COLUMN   Move.priority   IS
+    'Defines the priority of a move. Negative values are slower. Positive values are faster.';
+COMMENT ON COLUMN   Move.recoil     IS 'Defines the recoil damage of a move';
+COMMENT ON COLUMN   Move.crash      IS 'Defines the crash damage of a move';
+COMMENT ON COLUMN   Move.contact    IS 'Defines if a move makes contact';
+COMMENT ON COLUMN   Move.sound      IS 'Defines if a move is a sound move';
+COMMENT ON COLUMN   Move.punch      IS 'Defines if a move is a punch move';
+COMMENT ON COLUMN   Move.biting     IS 'Defines if a move is a biting move';
+COMMENT ON COLUMN   Move.snatch     IS 'Defines if a move can be snatched';
+COMMENT ON COLUMN   Move.slicing    IS 'Defines if a move is a slicing move';
+COMMENT ON COLUMN   Move.bullet     IS 'Defines if a move is a bullet move';
+COMMENT ON COLUMN   Move.wind       IS 'Defines if a move is a wind move';
+COMMENT ON COLUMN   Move.powder     IS 'Defines if a move is a powder move';
+COMMENT ON COLUMN   Move.gravity    IS 'Defines if a move is affected by gravity';
+COMMENT ON COLUMN   Move.defrost    IS 'Defines if a move can defrost a frozen pokemon';
+COMMENT ON COLUMN   Move.reflect    IS 'Defines if a move is reflected by magic coat';
+COMMENT ON COLUMN   Move.block      IS 'Defines if a move is blocked by protect';
+COMMENT ON COLUMN   Move.copy       IS 'Defines if a move can be copied by mirror move';
+COMMENT ON COLUMN   Move.spc_eff    IS 'Defines the special effects of a move';
+
+-- recoil: damage taken by user based on damage dealt to opponent
+
+-- crash: damage taken by the user if the move misses
+
+-- target:
+    -- self
+    -- single_adjacent_foe
+    -- single_adjacent_any
+    -- single_adjacent_ally
+    -- single_any
+    -- user_or_adjacent_ally
+    -- all_adjacent_foe
+    -- all_adjacent_any
+    -- all_foes
+    -- field
+    -- team
+    -- special
+
+-- spc_eff: special attributes on a move that are not standard
+
+-- effect values
+-- Weather      Terrain     Status      HiddenStatus    StatChange      EntryHazard     RatioDamage             RatioHeal               Stun    Flinch              TypeChange
+
+-- Sun          Misty       Burn        Attract         HP              Spikes          Percent of max health   Percent of max health   Self    Percent Chance      Type to change to
+-- HarshSun     Electric    Paralysis   Confuse         Attack          Pointed stones
+-- Rain         Grassy      Poison      Curse           Defense         Sticky web
+-- HeavyRain    Psychic     Sleep       Heal            SpecialAttack   Poison spikes
+-- Sandstorm    Clear       Freeze                      SpecialDefense  Sharp steel
+-- StrongWinds              Heal                        Speed
+-- Hail                                                 Accuracy
+-- Fog                                                  Evasion
+-- Clear                                                Clear

@@ -1,0 +1,28 @@
+CREATE TABLE IF NOT EXISTS Item(
+    name            VARCHAR(16) NOT NULL,
+    game            VARCHAR(16) NOT NULL    REFERENCES Game,
+    type            VARCHAR(16) NOT NULL    REFERENCES ItemType,
+    fling_dmg       p_ty_int    DEFAULT 30,
+    purchase_price  u_sm_int,
+    sell_price      u_sm_int,
+    description     TEXT        NOT NULL,
+    details         TEXT,
+    PRIMARY KEY(name, game)
+);
+COMMENT ON TABLE Item                   IS 'Details about each item.';
+COMMENT ON COLUMN Item.fling_dmg        IS 'The amount of damage done when the item is used as a fling attack.';
+COMMENT ON COLUMN Item.purchase_price   IS 'NULL values means the item cannot be bought.';
+COMMENT ON COLUMN Item.sell_price       IS 'NULL values means the item cannot be sold.';
+COMMENT ON COLUMN Item.description      IS 'The in-game flavor text for the item.';
+COMMENT ON COLUMN Item.details          IS 'Details on the item''s use/purpose.';
+
+CREATE TABLE IF NOT EXISTS Bag(
+    item_name   VARCHAR(16) NOT NULL,
+    trainer_id  u_sm_int    NOT NULL,
+    game        VARCHAR(16) NOT NULL            REFERENCES Game,
+    count       p_max_99    NOT NULL DEFAULT 1,
+    PRIMARY KEY(item_name, trainer_id),
+    FOREIGN KEY(item_name, game)    REFERENCES Item(name, game),
+    FOREIGN KEY(trainer_id, game)   REFERENCES Trainer(ot_id, game)
+);
+COMMENT ON TABLE Bag IS 'A trainer''s bag, which contains items.';
